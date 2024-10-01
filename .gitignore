@@ -1,8 +1,6 @@
-*.o
-*.so
-*.a
-*.lib
-obj
-bin
-.vs
-x64
+/.vs
+/baseline.sln
+/client/x64/
+/engine/x64/
+/x64
+/client/client/
