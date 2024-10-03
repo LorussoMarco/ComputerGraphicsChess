@@ -16,11 +16,11 @@
 
    // C/C++:
    #include <iostream>
-
+   
    #define GLM_ENABLE_EXPERIMENTAL
-   #include <glm.hpp>
-   #include <gtx/string_cast.hpp>
-  
+   #include <glm/glm.hpp>
+   #include <glm/gtx/string_cast.hpp>
+
 
 
 //////////
