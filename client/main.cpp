@@ -17,10 +17,10 @@
    // C/C++:
    #include <iostream>
 
-   /*#define GLM_ENABLE_EXPERIMENTAL
+   #define GLM_ENABLE_EXPERIMENTAL
    #include <glm.hpp>
    #include <gtx/string_cast.hpp>
-   */
+  
 
 
 //////////
@@ -35,10 +35,10 @@
  */
 int main(int argc, char *argv[])
 {
-	/*
+	
 	glm::vec3 a(0.0f, 1.0f, -1.0f);
 	std::cout << glm::to_string(a) << std::endl;
-	*/
+	
    // Credits:
    std::cout << "Client application example, A. Peternier (C) SUPSI" << std::endl;
    std::cout << std::endl;
