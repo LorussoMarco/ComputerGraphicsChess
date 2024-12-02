@@ -1,58 +1,46 @@
 /**
  * @file        main.cpp
  * @brief       Client application (that uses the graphics engine)
- *
- * @author
  */
 
- //////////////
- // #INCLUDE //
- //////////////
-
- // Library header:
+ // Library headers
 #include "engine.h"
-
-// C/C++:
+#include "Node.h"
+#include "Object.h"
 #include <iostream>
-
-//////////
-// MAIN //
-//////////
-
-/**
- * Application entry point.
- * @param argc number of command-line arguments passed
- * @param argv array containing up to argc passed arguments
- * @return error code (0 on success, error code otherwise)
- */
-#include "engine.h"
+#include <memory>
 
 int main() {
     auto& engine = Eng::Base::getInstance();
 
-    if (!engine.init("My Engine Window", 800, 600)) {
+    if (!engine.init("Scene with Cubes", 800, 600)) {
         return -1;
     }
 
-    // Corretto: cattura `engine` per riferimento [&]
-    engine.setDisplayCallback([&engine]() {
+    auto rootNode = std::make_shared<Node>();
+
+    auto cube1 = std::make_shared<Object>();
+    cube1->setPosition(0.0f, 0.0f, -5.0f);
+    rootNode->addChild(cube1);
+
+    auto cube2 = std::make_shared<Object>();
+    cube2->setPosition(-2.0f, 0.0f, -5.0f);
+    cube2->setScale(0.8f, 0.8f, 0.8f);
+    rootNode->addChild(cube2);
+
+    auto cube3 = std::make_shared<Object>();
+    cube3->setPosition(2.0f, 0.0f, -5.0f);
+    cube3->setScale(0.5f, 0.5f, 0.5f);
+    rootNode->addChild(cube3);
+
+    engine.setDisplayCallback([&engine, rootNode]() {
         engine.clearWindow();
-        // Logica di rendering
+        rootNode->draw(glm::mat4(1.0f));
         engine.swapBuffers();
         });
 
-    // Corretto: cattura `engine` per riferimento [&]
-    engine.setKeyboardCallback([&engine](unsigned char key, int, int) {
-        if (key == 27) { // ESC per uscire
-            engine.free();
-        }
-        });
-
-    // Corretto: cattura `engine` per riferimento [&]
-    engine.setReshapeCallback([&engine](int width, int height) {
-        engine.resizeViewport(width, height);
-        });
-
     engine.run();
+
+    std::cout << "Rendering completed!" << std::endl;
     return 0;
 }

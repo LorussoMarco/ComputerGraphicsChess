@@ -1,25 +1,39 @@
 #include "Object.h"
+#include <GL/freeglut.h>
+#include <glm/glm.hpp>
 
-Object::Object() : position(0.0f), rotationAxis(0.0f, 1.0f, 0.0f), rotationAngle(0.0f), scale(1.0f) {}
+Object::Object() {}
 
 Object::~Object() {}
 
-void Object::setPosition(float x, float y, float z) {
-    position = glm::vec3(x, y, z);
+void Object::draw(const glm::mat4& parentTransform) {
+    Node::draw(parentTransform); // Calcola le trasformazioni globali
+    renderCube(); // Disegna il cubo
 }
 
-void Object::setRotation(float angle, float x, float y, float z) {
-    rotationAngle = angle;
-    rotationAxis = glm::vec3(x, y, z);
-}
+void Object::renderCube() {
+    static const float vertices[] = {
+        -0.5f, -0.5f,  0.5f,  // Front face
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,  // Back face
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f
+    };
 
-void Object::setScale(float x, float y, float z) {
-    scale = glm::vec3(x, y, z);
-}
+    static const unsigned int indices[] = {
+        0, 1, 2, 2, 3, 0, // Front face
+        4, 5, 6, 6, 7, 4, // Back face
+        0, 1, 5, 5, 4, 0, // Bottom face
+        3, 2, 6, 6, 7, 3, // Top face
+        0, 3, 7, 7, 4, 0, // Left face
+        1, 2, 6, 6, 5, 1  // Right face
+    };
 
-glm::mat4 Object::getModelMatrix() const {
-    glm::mat4 model = glm::translate(glm::mat4(1.0f), position);
-    model = glm::rotate(model, glm::radians(rotationAngle), rotationAxis);
-    model = glm::scale(model, scale);
-    return model;
+    glEnableClientState(GL_VERTEX_ARRAY);
+    glVertexPointer(3, GL_FLOAT, 0, vertices);
+    glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, indices);
+    glDisableClientState(GL_VERTEX_ARRAY);
 }
