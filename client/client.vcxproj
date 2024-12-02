@@ -47,16 +47,18 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC
+;_DEBUG;_CONSOLE;FREEGLUT_STATIC
+;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>..\engine;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Debug;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\glm\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\glm\include;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\include;..\engine;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Debug;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\glm\include</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Debug;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>engine.lib;freeglut_staticd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -65,18 +67,20 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FREEGLUT_STATIC
+;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Release;..\engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\glm\include;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\include;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Release;..\engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Release;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>engine.lib;freeglut_static.lib;
+opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
