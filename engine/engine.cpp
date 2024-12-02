@@ -1,10 +1,19 @@
 #include "engine.h"
 #include <GL/freeglut.h>
 #include <iostream>
+#include <functional>
+#include <memory>
 
+// Reserved structure for internal use
 struct Eng::Base::Reserved {
     bool initFlag;
     int windowID;
+
+    // Callbacks
+    std::function<void()> displayCallback;
+    std::function<void(unsigned char, int, int)> keyboardCallback;
+    std::function<void(int, int)> reshapeCallback;
+
     Reserved() : initFlag{ false }, windowID{ -1 } {}
 };
 
@@ -29,8 +38,7 @@ bool Eng::Base::init(const char* windowTitle, int width, int height) {
         return false;
     }
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
+    // Initialize FreeGLUT
     int argc = 1;
     char* argv[] = { const_cast<char*>("") };
     glutInit(&argc, argv);
@@ -43,8 +51,14 @@ bool Eng::Base::init(const char* windowTitle, int width, int height) {
         return false;
     }
 
-    running = true;
+    // Configure OpenGL
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
+    // Mark as initialized
     reserved->initFlag = true;
+    running = true;
+
     std::cout << "[>] Engine initialized with window: " << windowTitle << std::endl;
     return true;
 }
@@ -57,24 +71,45 @@ bool Eng::Base::free() {
     }
 
     glutDestroyWindow(reserved->windowID);
+    reserved->windowID = -1;
     reserved->initFlag = false;
     running = false;
 
-    std::cout << "[<] Engine deinitialized" << std::endl;
+    std::cout << "[<] Engine deinitialized." << std::endl;
     return true;
 }
 
-// Set callbacks
-void Eng::Base::setKeyboardCallback(void (*callback)(unsigned char, int, int)) {
-    glutKeyboardFunc(callback);
+// Run main loop
+void Eng::Base::run() {
+    if (!reserved->initFlag) {
+        std::cerr << "ERROR: Engine not initialized!" << std::endl;
+        return;
+    }
+    glutMainLoop();
 }
 
-void Eng::Base::setDisplayCallback(void (*callback)()) {
-    glutDisplayFunc(callback);
+// Set display callback
+void Eng::Base::setDisplayCallback(std::function<void()> callback) {
+    reserved->displayCallback = std::move(callback);
+    glutDisplayFunc([]() {
+        Eng::Base::getInstance().reserved->displayCallback();
+        });
 }
 
-void Eng::Base::setReshapeCallback(void (*callback)(int, int)) {
-    glutReshapeFunc(callback);
+// Set keyboard callback
+void Eng::Base::setKeyboardCallback(std::function<void(unsigned char, int, int)> callback) {
+    reserved->keyboardCallback = std::move(callback);
+    glutKeyboardFunc([](unsigned char key, int x, int y) {
+        Eng::Base::getInstance().reserved->keyboardCallback(key, x, y);
+        });
+}
+
+// Set reshape callback
+void Eng::Base::setReshapeCallback(std::function<void(int, int)> callback) {
+    reserved->reshapeCallback = std::move(callback);
+    glutReshapeFunc([](int width, int height) {
+        Eng::Base::getInstance().reserved->reshapeCallback(width, height);
+        });
 }
 
 // Rendering utilities
@@ -93,4 +128,17 @@ void Eng::Base::setBackgroundColor(float r, float g, float b) {
 // Status
 bool Eng::Base::isRunning() const {
     return running;
+}
+
+// Resize viewport
+void Eng::Base::resizeViewport(int width, int height) {
+    if (height == 0) height = 1; // Prevent division by zero
+    float aspect = static_cast<float>(width) / static_cast<float>(height);
+
+    glViewport(0, 0, width, height);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(45.0, aspect, 0.1, 100.0);
+    glMatrixMode(GL_MODELVIEW);
 }

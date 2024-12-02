@@ -1,66 +1,47 @@
 /**
- * @file		engine.h
- * @brief	Graphics engine main include file
+ * @file        engine.h
+ * @brief       Graphics engine main include file
  *
- * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch] << change this to your group members
+ * @author
  */
 #pragma once
 
+ //////////////
+ // #INCLUDE //
+ //////////////
 
- 
-//////////////
-// #INCLUDE //
-//////////////
-
-   // C/C++:         
-   #include <memory> 
-
-
+ // C++ Standard:
+#include <memory>
+#include <functional>
 
 /////////////
 // VERSION //
 /////////////
 
-   // Generic info:
+// Generic info:
 #ifdef _DEBUG
-   #define LIB_NAME      "My Graphics Engine v0.1a (debug)"   ///< Library credits
+#define LIB_NAME      "My Graphics Engine v0.1a (debug)"   ///< Library credits
 #else
-   #define LIB_NAME      "My Graphics Engine v0.1a"   ///< Library credits
+#define LIB_NAME      "My Graphics Engine v0.1a"          ///< Library credits
 #endif
-   #define LIB_VERSION   10                           ///< Library version (divide by 10)
+#define LIB_VERSION   10                                     ///< Library version (divide by 10)
 
-   // Export API:
+// Export API:
 #ifdef _WINDOWS
-   // Specifies i/o linkage (VC++ spec):
-   #ifdef ENGINE_EXPORTS
-      #define ENG_API __declspec(dllexport)
-   #else
-      #define ENG_API __declspec(dllimport)
-   #endif      
-
-   // Get rid of annoying warnings:
-   #pragma warning(disable : 4251) 
-#else // Under linux
-   #define ENG_API
+#ifdef ENGINE_EXPORTS
+#define ENG_API __declspec(dllexport)
+#else
+#define ENG_API __declspec(dllimport)
+#endif      
+#else
+#define ENG_API
 #endif
-
-
 
 ///////////////
 // NAMESPACE //
 ///////////////
 
 namespace Eng {
-
-
-
-    //////////////
-    // #INCLUDE //
-    //////////////   
-
-       // You can subinclude here other headers of your engine...
-
-
 
     ///////////////////////
     // MAIN ENGINE CLASS //
@@ -77,11 +58,12 @@ namespace Eng {
         // Lifecycle
         bool init(const char* windowTitle, int width, int height);
         bool free();
+        void run();
 
         // Set callbacks
-        void setKeyboardCallback(void (*callback)(unsigned char, int, int));
-        void setDisplayCallback(void (*callback)());
-        void setReshapeCallback(void (*callback)(int, int));
+        void setKeyboardCallback(std::function<void(unsigned char, int, int)> callback);
+        void setDisplayCallback(std::function<void()> callback);
+        void setReshapeCallback(std::function<void(int, int)> callback);
 
         // Rendering utilities
         void clearWindow();
@@ -90,6 +72,9 @@ namespace Eng {
 
         // Status
         bool isRunning() const;
+
+        // Viewport management
+        void resizeViewport(int width, int height);
 
     private:
         // Private constructor/destructor
@@ -107,5 +92,5 @@ namespace Eng {
         // Internal state
         bool running;
     };
-}; // end of namespace Eng::
 
+} // end of namespace Eng
