@@ -33,7 +33,6 @@ void Node::updateModelMatrix() {
 void Node::draw(const glm::mat4& parentTransform) {
     glm::mat4 globalTransform = parentTransform * modelMatrix;
 
-    // Disegna i figli
     for (const auto& child : children) {
         child->draw(globalTransform);
     }

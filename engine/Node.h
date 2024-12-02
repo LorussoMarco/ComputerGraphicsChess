@@ -8,7 +8,7 @@ public:
     Node();
     virtual ~Node();
 
-    // Transformazioni
+    // Trasformazioni
     void setPosition(float x, float y, float z);
     void setScale(float x, float y, float z);
     void addChild(std::shared_ptr<Node> child);
