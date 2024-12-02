@@ -58,7 +58,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Debug;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>engine.lib;freeglut_staticd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>engine.lib;freeglut_staticd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -79,8 +79,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Release;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>engine.lib;freeglut_static.lib;
-opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>engine.lib;freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>

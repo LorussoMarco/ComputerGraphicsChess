@@ -77,7 +77,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>freeglut_static.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freeglut_static.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Release;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
