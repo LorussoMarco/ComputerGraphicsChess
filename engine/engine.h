@@ -54,53 +54,58 @@ namespace Eng {
 
 
 
-//////////////
-// #INCLUDE //
-//////////////   
+    //////////////
+    // #INCLUDE //
+    //////////////   
 
-   // You can subinclude here other headers of your engine...
-
-
-
-///////////////////////
-// MAIN ENGINE CLASS //
-///////////////////////
-
-/**
- * @brief Base engine main class. This class is a singleton.
- */
-class ENG_API Base final
-{
-//////////
-public: //
-//////////	      
-
-   // Const/dest:
-   Base(Base const &) = delete;
-   ~Base();
-
-   // Operators:
-   void operator=(Base const &) = delete;
-
-   // Singleton:
-   static Base &getInstance();
-
-   // Init/free:
-   bool init();
-   bool free();   
+       // You can subinclude here other headers of your engine...
 
 
-///////////
-private: //
-///////////	
 
-   // Reserved:
-   struct Reserved;
-   std::unique_ptr<Reserved> reserved;
+    ///////////////////////
+    // MAIN ENGINE CLASS //
+    ///////////////////////
 
-   // Const/dest:
-   Base();
-};
+    /**
+     * @brief Base engine main class. This class is a singleton.
+     */
+    class ENG_API Base final {
+    public:
+        // Singleton instance
+        static Base& getInstance();
 
+        // Lifecycle
+        bool init(const char* windowTitle, int width, int height);
+        bool free();
+
+        // Set callbacks
+        void setKeyboardCallback(void (*callback)(unsigned char, int, int));
+        void setDisplayCallback(void (*callback)());
+        void setReshapeCallback(void (*callback)(int, int));
+
+        // Rendering utilities
+        void clearWindow();
+        void swapBuffers();
+        void setBackgroundColor(float r, float g, float b);
+
+        // Status
+        bool isRunning() const;
+
+    private:
+        // Private constructor/destructor
+        Base();
+        ~Base();
+
+        // Prevent copying
+        Base(const Base&) = delete;
+        void operator=(const Base&) = delete;
+
+        // Reserved data
+        struct Reserved;
+        std::unique_ptr<Reserved> reserved;
+
+        // Internal state
+        bool running;
+    };
 }; // end of namespace Eng::
 

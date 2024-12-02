@@ -1,128 +1,96 @@
-/**
- * @file		engine.cpp
- * @brief	Graphics engine main file
- *
- * @author	Achille Peternier (C) SUPSI [achille.peternier@supsi.ch] << change this to your group members
- */
+#include "engine.h"
+#include <GL/freeglut.h>
+#include <iostream>
 
-
-
-//////////////
-// #INCLUDE //
-//////////////
-
-   // Main include:
-   #include "engine.h"
-   
-   // C/C++:
-   #include <iostream>   
-   #include <source_location>
-
-
-
-/////////////////////////
-// RESERVED STRUCTURES //
-/////////////////////////
-
-/**
- * @brief Base class reserved structure (using PIMPL/Bridge design pattern https://en.wikipedia.org/wiki/Opaque_pointer).
- */
-struct Eng::Base::Reserved
-{
-   // Flags:
-   bool initFlag;
-   
-
-   /**
-    * Constructor.
-    */
-   Reserved() : initFlag{ false } 
-   {}
+struct Eng::Base::Reserved {
+    bool initFlag;
+    int windowID;
+    Reserved() : initFlag{ false }, windowID{ -1 } {}
 };
 
-
-
-////////////////////////
-// BODY OF CLASS Base //
-////////////////////////
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Constructor.
- */
-ENG_API Eng::Base::Base() : reserved(std::make_unique<Eng::Base::Reserved>())
-{  
-#ifdef _DEBUG   
-   std::cout << "[+] " << std::source_location::current().function_name() << " invoked" << std::endl;
-#endif
+// Singleton instance
+Eng::Base& Eng::Base::getInstance() {
+    static Base instance;
+    return instance;
 }
 
+// Constructor
+Eng::Base::Base() : reserved(std::make_unique<Reserved>()), running(false) {}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Destructor.
- */
-ENG_API Eng::Base::~Base()
-{
-#ifdef _DEBUG
-   std::cout << "[-] " << std::source_location::current().function_name() << " invoked" << std::endl;
-#endif
+// Destructor
+Eng::Base::~Base() {
+    free();
 }
 
+// Init function
+bool Eng::Base::init(const char* windowTitle, int width, int height) {
+    if (reserved->initFlag) {
+        std::cerr << "ERROR: Engine already initialized!" << std::endl;
+        return false;
+    }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Gets a reference to the (unique) singleton instance.
- * @return reference to singleton instance
- */
-Eng::Base ENG_API &Eng::Base::getInstance()
-{
-   static Base instance;
-   return instance;
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+    int argc = 1;
+    char* argv[] = { const_cast<char*>("") };
+    glutInit(&argc, argv);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
+    glutInitWindowSize(width, height);
+    reserved->windowID = glutCreateWindow(windowTitle);
+
+    if (reserved->windowID < 1) {
+        std::cerr << "ERROR: Unable to create window!" << std::endl;
+        return false;
+    }
+
+    running = true;
+    reserved->initFlag = true;
+    std::cout << "[>] Engine initialized with window: " << windowTitle << std::endl;
+    return true;
 }
 
+// Free function
+bool Eng::Base::free() {
+    if (!reserved->initFlag) {
+        std::cerr << "ERROR: Engine not initialized!" << std::endl;
+        return false;
+    }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Init internal components. 
- * @return TF
- */
-bool ENG_API Eng::Base::init()
-{
-   // Already initialized?
-   if (reserved->initFlag)
-   {
-      std::cout << "ERROR: engine already initialized" << std::endl;
-      return false;
-   }
+    glutDestroyWindow(reserved->windowID);
+    reserved->initFlag = false;
+    running = false;
 
-   // Here you can initialize most of the graphics engine's dependencies and default settings...
-   
-   // Done:
-   std::cout << "[>] " << LIB_NAME << " initialized" << std::endl;
-   reserved->initFlag = true;
-   return true;
+    std::cout << "[<] Engine deinitialized" << std::endl;
+    return true;
 }
 
+// Set callbacks
+void Eng::Base::setKeyboardCallback(void (*callback)(unsigned char, int, int)) {
+    glutKeyboardFunc(callback);
+}
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/**
- * Free internal components.
- * @return TF
- */
-bool ENG_API Eng::Base::free()
-{
-   // Not initialized?
-   if (!reserved->initFlag)
-   {
-      std::cout << "ERROR: engine not initialized" << std::endl;
-      return false;
-   }
+void Eng::Base::setDisplayCallback(void (*callback)()) {
+    glutDisplayFunc(callback);
+}
 
-   // Here you can properly dispose of any allocated resource (including third-party dependencies)...
+void Eng::Base::setReshapeCallback(void (*callback)(int, int)) {
+    glutReshapeFunc(callback);
+}
 
-   // Done:
-   std::cout << "[<] " << LIB_NAME << " deinitialized" << std::endl;
-   reserved->initFlag = false;
-   return true;
+// Rendering utilities
+void Eng::Base::clearWindow() {
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+}
+
+void Eng::Base::swapBuffers() {
+    glutSwapBuffers();
+}
+
+void Eng::Base::setBackgroundColor(float r, float g, float b) {
+    glClearColor(r, g, b, 1.0f);
+}
+
+// Status
+bool Eng::Base::isRunning() const {
+    return running;
 }
