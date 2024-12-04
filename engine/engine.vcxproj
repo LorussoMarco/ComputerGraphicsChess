@@ -82,6 +82,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Camera.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="List.cpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="Texture.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="Light.h" />
