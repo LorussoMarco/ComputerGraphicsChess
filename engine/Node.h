@@ -1,27 +1,51 @@
 #pragma once
-#include <vector>
+
 #include <memory>
-#include <glm/glm.hpp>
 
-class Node {
+#include "Object.h"
+#include "Common.h"
+
+/**
+ * @class Node
+ * @brief Rappresenta un nodo nella gerarchia di una scena 3D.
+ *
+ * Questo file contiene la definizione della classe Node,
+ * che rappresenta un nodo nella gerarchia di una scena 3D.
+ */
+class LIB_API Node : public Object
+{
 public:
+
     Node();
-    virtual ~Node();
+    Node(std::string type);
 
-    // Trasformazioni
-    void setPosition(float x, float y, float z);
-    void setScale(float x, float y, float z);
-    void addChild(std::shared_ptr<Node> child);
-    void removeChild(std::shared_ptr<Node> child);
+    // Getter
+    glm::vec3 getPosition() const;
+    glm::vec3 getRotation() const;
+    glm::vec3 getScale() const;
+    int getPriority() const;
+    glm::mat4 getLocalMatrix() const;
+    std::vector<std::shared_ptr<Node>> getChildren() const;
 
-    // Disegno
-    virtual void draw(const glm::mat4& parentTransform);
+    // Setter
+    void setPosition(const glm::vec3 newPosition);
+    void setRotation(const glm::vec3 newPosition);
+    void setScale(const glm::vec3 newPosition);
+    void setBaseMatrix(const glm::mat4 newBaseMatrix);
+    void setPriority(int p);
 
-protected:
-    glm::vec3 position;
-    glm::vec3 scale;
-    glm::mat4 modelMatrix;
-    std::vector<std::shared_ptr<Node>> children;
+    void addChild(const std::shared_ptr<Node> newChild);
 
-    void updateModelMatrix();
+    // Renderizza un node
+    void render(const glm::mat4 viewMatrix) const override;
+
+private:
+
+    int priority; ///< Priorita di rendering
+    std::vector<std::shared_ptr<Node>> children; ///< Vettore di nodi figli.
+
+    glm::mat4 _baseMatrix; ///< Posizione/orientamento iniziale dell'oggetto nello spazio.
+    glm::vec3 _position;   ///< La posizione del nodo rispetto alla matrice di base.
+    glm::vec3 _rotation;   ///< La rotazione del nodo rispetto alla matrice di base.
+    glm::vec3 _scale;      ///< La scala del nodo rispetto alla matrice di base.
 };
