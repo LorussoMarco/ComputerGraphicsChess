@@ -4,14 +4,14 @@
  */
 
  // Library headers
-#include "engine.h"
+#include "Engine.h"
 #include <iostream>
 #include <memory>
 
 int main() {
-    auto& engine = Eng::Base::getInstance();
+    auto& Engine = Eng::Base::getInstance();
 
-    if (!engine.init("Scene with Cubes", 800, 600)) {
+    if (!Engine.init("Scene with Cubes", 800, 600)) {
         return -1;
     }
 

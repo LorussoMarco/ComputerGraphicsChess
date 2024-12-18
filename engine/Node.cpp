@@ -1,6 +1,6 @@
 #include "Node.h"
 
-#include <GL/freeglut.h>
+#include "GL/freeglut.h"
 #include <glm/gtc/type_ptr.hpp>
 
 /**
