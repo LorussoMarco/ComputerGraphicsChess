@@ -20,6 +20,9 @@ public:
 
     // Getter
     int getCurrentLight(const int lightId) const;
+    glm::vec3 getAmbientColor() const;   ///< Restituisce il colore ambientale.
+    glm::vec3 getDiffuseColor() const;   ///< Restituisce il colore diffuso.
+    glm::vec3 getSpecularColor() const;  ///< Restituisce il colore speculare.
 
     // Setter
     void setAmbientColor(const glm::vec3 newColor);

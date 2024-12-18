@@ -17,7 +17,7 @@
  * Se il caricamento fallisce, viene semplicemente impostato a `nullptr` e non viene creata alcuna texture.
  */
 Texture::Texture(const std::string path)
-    : Object{ "Texture" }
+    : Object{ "Texture" }, _textureId{ 0 }
 {
     // Carica l'immagine dal percorso specificato utilizzando FreeImage.
     FIBITMAP* bmp = FreeImage_Load(FreeImage_GetFileType(path.c_str(), 0), path.c_str());

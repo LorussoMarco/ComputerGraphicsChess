@@ -22,7 +22,9 @@
 #define LIB_API
 #endif
 
+#ifndef _DEBUG
 #define _DEBUG
+#endif
 #ifdef _DEBUG
 #define DEBUG( message ) \
         std::cout << "[DEBUG] " << message << std::endl;

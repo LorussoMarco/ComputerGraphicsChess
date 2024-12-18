@@ -29,9 +29,10 @@ void testLightSetters() {
     light.setSpecularColor(glm::vec3(1.0f, 1.0f, 1.0f));
 
     // Stampa i colori impostati
-    std::cout << "Colore Ambient: " << glm::to_string(light._ambientColor) << " (Expected: (0.2, 0.2, 0.2))" << std::endl;
-    std::cout << "Colore Diffuse: " << glm::to_string(light._diffuseColor) << " (Expected: (0.8, 0.8, 0.8))" << std::endl;
-    std::cout << "Colore Specular: " << glm::to_string(light._specularColor) << " (Expected: (1.0, 1.0, 1.0))" << std::endl;
+    std::cout << "Colore Ambient: " << glm::to_string(light.getAmbientColor()) << " (Expected: (0.2, 0.2, 0.2))" << std::endl;
+    std::cout << "Colore Diffuse: " << glm::to_string(light.getDiffuseColor()) << " (Expected: (0.8, 0.8, 0.8))" << std::endl;
+    std::cout << "Colore Specular: " << glm::to_string(light.getSpecularColor()) << " (Expected: (1.0, 1.0, 1.0))" << std::endl;
+
 }
 
 // Funzione per testare il reset dell'ID
