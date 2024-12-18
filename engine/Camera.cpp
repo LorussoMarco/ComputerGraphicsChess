@@ -1,5 +1,4 @@
 #include "Camera.h"
-#include <glm/gtx/string_cast.hpp>
 
 
 // Costruttore
