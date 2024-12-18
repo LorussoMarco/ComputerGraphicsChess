@@ -78,6 +78,9 @@
     <ClCompile Include="TextureTest.cpp">
       <Filter>tests</Filter>
     </ClCompile>
+    <ClCompile Include="RunTest.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="engine.h">

@@ -52,10 +52,9 @@ void testMaterialWithTexture() {
     material.render(viewMatrix);
 }
 
-int main() {
+void testMaterial() {
     testMaterialConstructor();
     testMaterialSettersAndGetters();
     testMaterialWithTexture();
 
-    return 0;
 }

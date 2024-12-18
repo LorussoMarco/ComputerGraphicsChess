@@ -87,9 +87,8 @@ void testRenderFunction() {
     renderListManager.render(inversaCamera);
 }
 
-int main() {
+void testList() {
     testPassFunction();
     testSortListRendering();
     testRenderFunction();
-    return 0;
 }

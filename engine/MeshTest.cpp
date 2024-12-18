@@ -72,10 +72,9 @@ void testMeshDataAndRender() {
     mesh.render(viewMatrix);
 }
 
-int main() {
+void testMesh() {
     testMeshConstructor();
     testMeshSetters();
     testMeshDataAndRender();
 
-    return 0;
 }

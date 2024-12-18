@@ -49,10 +49,9 @@ void testResetIdGenerator() {
     std::cout << "Oggetto 2 ID dopo reset: " << obj2.getId() << " (Expected: 1)" << std::endl;
 }
 
-int main() {
+void testObject() {
     testObjectConstructor();
     testObjectSetters();
     testResetIdGenerator();
 
-    return 0;
 }

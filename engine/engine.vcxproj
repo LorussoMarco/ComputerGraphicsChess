@@ -56,8 +56,8 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
-      <AdditionalDependencies>freeglut_staticd.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>freeglut_staticd.lib;opengl32.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeimage\lib\x64\Debug;C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\lib\x64\Debug;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -100,6 +100,7 @@
     <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectTest.cpp" />
+    <ClCompile Include="RunTest.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureTest.cpp" />
   </ItemGroup>

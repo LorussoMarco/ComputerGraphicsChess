@@ -3,12 +3,13 @@ AR = ar
 LD = g++
 WINDRES = windres
 
-INC = 
+# Flags generali
 CFLAGS = -Wall -std=c++20 -fPIC -m64 -fexceptions
-RCFLAGS = 
-RESINC = 
-LIBDIR = 
 LDFLAGS = -m64
+
+# Include generali
+INC = 
+LIBDIR = 
 
 # Debug Settings
 INC_DEBUG = -I../dependencies/freeglut/include $(INC)
@@ -32,66 +33,68 @@ OUT_RELEASE = bin/Release/libengine.so
 TESTDIR = tests
 OBJDIR_TEST = obj/Test
 BINDIR_TEST = bin/Test
-
-TEST_SRC = $(wildcard $(TESTDIR)/*.cpp)         # Individua tutti i file di test
-TEST_BIN = $(patsubst $(TESTDIR)/%.cpp, $(BINDIR_TEST)/%, $(TEST_SRC)) # Output dei binari di test
+TEST_MAIN = $(TESTDIR)/RunTests.cpp  # File con la funzione main per i test
+TEST_OBJS = $(patsubst $(TESTDIR)/%.cpp, $(OBJDIR_TEST)/%.o, $(filter-out $(TEST_MAIN), $(wildcard $(TESTDIR)/*.cpp)))
+TEST_BIN = $(BINDIR_TEST)/test_runner
 
 # Target Principale
 all: test debug release
 
-clean: clean_debug clean_release clean_test
+clean: clean_test clean_debug clean_release
 
 # Target per i test
 before_test:
 	test -d $(BINDIR_TEST) || mkdir -p $(BINDIR_TEST)
 	test -d $(OBJDIR_TEST) || mkdir -p $(OBJDIR_TEST)
 
-$(BINDIR_TEST)/%: $(TESTDIR)/%.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) $< -o $@ $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+# Compila i file di test tranne RunTests.cpp (file principale)
+$(OBJDIR_TEST)/%.o: $(TESTDIR)/%.cpp
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c $< -o $@
 
-test: before_test $(TEST_BIN)
-	@echo "Esecuzione di tutti i test:"
-	@for test_exec in $(TEST_BIN); do \
-		echo "Running $$test_exec"; \
-		./$$test_exec; \
-	done
+# Compila il test_runner con gli altri oggetti
+$(TEST_BIN): before_test $(OBJDIR_TEST)/RunTests.o $(TEST_OBJS)
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) $^ -o $(TEST_BIN) $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+
+test: $(TEST_BIN)
+	@echo "Esecuzione dei test:"
+	@./$(TEST_BIN)
 
 clean_test:
-	rm -f $(BINDIR_TEST)/* $(OBJDIR_TEST)/*.o
+	rm -f $(OBJDIR_TEST)/*.o $(TEST_BIN)
 	rm -rf $(BINDIR_TEST) $(OBJDIR_TEST)
 
 # Debug
-before_debug: 
+before_debug:
 	test -d bin/Debug || mkdir -p bin/Debug
 	test -d $(OBJDIR_DEBUG) || mkdir -p $(OBJDIR_DEBUG)
 
-debug: before_debug out_debug
+debug: before_debug $(OUT_DEBUG)
 
-out_debug: $(OBJDIR_DEBUG)/engine.o
-	$(LD) -shared $(LIBDIR_DEBUG) $(OBJDIR_DEBUG)/engine.o -o $(OUT_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+$(OUT_DEBUG): $(OBJDIR_DEBUG)/engine.o
+	$(LD) -shared $(LIBDIR_DEBUG) $^ -o $@ $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
 $(OBJDIR_DEBUG)/engine.o: engine.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c engine.cpp -o $(OBJDIR_DEBUG)/engine.o
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c $< -o $@
 
-clean_debug: 
+clean_debug:
 	rm -f $(OBJDIR_DEBUG)/*.o $(OUT_DEBUG)
-	rm -rf $(OBJDIR_DEBUG) bin/Debug
+	rm -rf bin/Debug $(OBJDIR_DEBUG)
 
 # Release
-before_release: 
+before_release:
 	test -d bin/Release || mkdir -p bin/Release
 	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
 
-release: before_release out_release
+release: before_release $(OUT_RELEASE)
 
-out_release: $(OBJDIR_RELEASE)/engine.o
-	$(LD) -shared $(LIBDIR_RELEASE) $(OBJDIR_RELEASE)/engine.o -o $(OUT_RELEASE) $(LDFLAGS_RELEASE) $(LIB_RELEASE)
+$(OUT_RELEASE): $(OBJDIR_RELEASE)/engine.o
+	$(LD) -shared $(LIBDIR_RELEASE) $^ -o $@ $(LDFLAGS_RELEASE) $(LIB_RELEASE)
 
 $(OBJDIR_RELEASE)/engine.o: engine.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c engine.cpp -o $(OBJDIR_RELEASE)/engine.o
+	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c $< -o $@
 
-clean_release: 
+clean_release:
 	rm -f $(OBJDIR_RELEASE)/*.o $(OUT_RELEASE)
-	rm -rf $(OBJDIR_RELEASE) bin/Release
+	rm -rf bin/Release $(OBJDIR_RELEASE)
 
-.PHONY: before_test test clean_test before_debug debug clean_debug before_release release clean_release
+.PHONY: all clean test clean_test debug clean_debug release clean_release

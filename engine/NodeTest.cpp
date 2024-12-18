@@ -59,11 +59,10 @@ void testChildrenManagement() {
     }
 }
 
-int main() {
+void testNode() {
     testNodeConstructor();
     testNodeSettersAndGetters();
     testLocalMatrix();
     testChildrenManagement();
 
-    return 0;
 }

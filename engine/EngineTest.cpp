@@ -42,14 +42,13 @@ void reshapeCallback(int width, int height) {
     Eng::Base::getInstance().resizeViewport(width, height);
 }
 
-int main() {
+void testEngine() {
     // Ottieni l'istanza del motore
     Eng::Base& engine = Eng::Base::getInstance();
 
     // Inizializza il motore
     if (!engine.init("Test Engine Window", 800, 600)) {
         std::cerr << "Errore durante l'inizializzazione del motore." << std::endl;
-        return -1;
     }
 
     // Imposta i callback
@@ -64,5 +63,4 @@ int main() {
     std::cout << "Premi 'Q' per chiudere la finestra." << std::endl;
     engine.run();
 
-    return 0;
 }

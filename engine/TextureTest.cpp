@@ -51,10 +51,8 @@ void testTextureDestructor() {
     std::cout << "Texture distrutta correttamente (distruttore chiamato)." << std::endl;
 }
 
-int main() {
+void testTexture() {
     testTextureConstructor();
     testRenderTexture();
     testTextureDestructor();
-
-    return 0;
 }

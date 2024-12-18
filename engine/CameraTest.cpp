@@ -40,10 +40,8 @@ void testInverseMatrix() {
     std::cout << "=========================" << std::endl;
 }
 
-int main() {
+void testCamera() {
     testCameraConstructor();
     testSettersAndGetters();
     testInverseMatrix();
-
-    return 0;
 }

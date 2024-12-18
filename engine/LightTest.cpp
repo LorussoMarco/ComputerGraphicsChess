@@ -54,10 +54,9 @@ void testLightResetId() {
     std::cout << "ID dopo il reset: " << light3.getCurrentLight(0) << " (Expected: GL_LIGHT0)" << std::endl;
 }
 
-int main() {
+void testLight() {
     testLightConstructor();
     testLightSetters();
     testLightResetId();
 
-    return 0;
 }

@@ -75,8 +75,3 @@ void testMeshData() {
     std::cout << "\n--- UV ---" << std::endl;
     printUVs(mesh.getUVs());
 }
-
-int main() {
-    testMeshData();
-    return 0;
-}
