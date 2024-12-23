@@ -51,8 +51,11 @@ before_test:
 $(OBJDIR_TEST)/%.o: $(TESTDIR)/%.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c $< -o $@
 
+$(OBJDIR_TEST)/RunTest.o: $(TEST_MAIN)
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c $< -o $@
+
 $(TEST_BIN): before_test $(OBJDIR_TEST)/RunTest.o $(TEST_OBJS) $(OBJ_DEBUG)
-	$(CXX) $^ -o $@ $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) $^ -o $@ $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
 test: $(TEST_BIN)
 	@echo "Esecuzione dei test:"
