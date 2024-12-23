@@ -34,7 +34,8 @@ TESTDIR = tests
 OBJDIR_TEST = obj/Test
 BINDIR_TEST = bin/Test
 TEST_MAIN = $(TESTDIR)/RunTest.cpp  # File con la funzione main per i test
-TEST_OBJS = $(patsubst $(TESTDIR)/%.cpp, $(OBJDIR_TEST)/%.o, $(filter-out $(TEST_MAIN), $(wildcard $(TESTDIR)/*.cpp)))
+TEST_SRC = $(filter-out $(TEST_MAIN), $(wildcard $(TESTDIR)/*.cpp))
+TEST_OBJS = $(patsubst $(TESTDIR)/%.cpp, $(OBJDIR_TEST)/%.o, $(TEST_SRC))
 TEST_BIN = $(BINDIR_TEST)/test_runner
 
 # Target Principale
@@ -47,16 +48,11 @@ before_test:
 	test -d $(BINDIR_TEST) || mkdir -p $(BINDIR_TEST)
 	test -d $(OBJDIR_TEST) || mkdir -p $(OBJDIR_TEST)
 
-# Compila i file di test tranne RunTest.cpp (file principale)
-$(OBJDIR_TEST)/RunTest.o: $(TESTDIR)/RunTest.cpp
+$(OBJDIR_TEST)/%.o: $(TESTDIR)/%.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c $< -o $@
 
-$(BINDIR_TEST)/test_runner: $(OBJDIR_TEST)/RunTest.o $(OBJ_DEBUG)
-	$(CXX) $^ -o $@ $(LDFLAGS_DEBUG) $(LIB_DEBUG)
-
-# Compila il test_runner con gli altri oggetti
-$(TEST_BIN): before_test $(OBJDIR_TEST)/RunTest.o $(TEST_OBJS)
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) $^ -o $(TEST_BIN) $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+$(TEST_BIN): before_test $(OBJDIR_TEST)/RunTest.o $(TEST_OBJS) $(OBJ_DEBUG)
+	$(CXX) $^ -o $@ $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
 test: $(TEST_BIN)
 	@echo "Esecuzione dei test:"
