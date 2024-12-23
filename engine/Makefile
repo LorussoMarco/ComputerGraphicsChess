@@ -33,7 +33,7 @@ OUT_RELEASE = bin/Release/libengine.so
 TESTDIR = tests
 OBJDIR_TEST = obj/Test
 BINDIR_TEST = bin/Test
-TEST_MAIN = $(TESTDIR)/RunTests.cpp  # File con la funzione main per i test
+TEST_MAIN = $(TESTDIR)/RunTest.cpp  # File con la funzione main per i test
 TEST_OBJS = $(patsubst $(TESTDIR)/%.cpp, $(OBJDIR_TEST)/%.o, $(filter-out $(TEST_MAIN), $(wildcard $(TESTDIR)/*.cpp)))
 TEST_BIN = $(BINDIR_TEST)/test_runner
 
@@ -47,12 +47,15 @@ before_test:
 	test -d $(BINDIR_TEST) || mkdir -p $(BINDIR_TEST)
 	test -d $(OBJDIR_TEST) || mkdir -p $(OBJDIR_TEST)
 
-# Compila i file di test tranne RunTests.cpp (file principale)
-$(OBJDIR_TEST)/%.o: $(TESTDIR)/%.cpp
+# Compila i file di test tranne RunTest.cpp (file principale)
+$(OBJDIR_TEST)/RunTest.o: $(TESTDIR)/RunTest.cpp
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c $< -o $@
 
+$(BINDIR_TEST)/test_runner: $(OBJDIR_TEST)/RunTest.o $(OBJ_DEBUG)
+	$(CXX) $^ -o $@ $(LDFLAGS_DEBUG) $(LIB_DEBUG)
+
 # Compila il test_runner con gli altri oggetti
-$(TEST_BIN): before_test $(OBJDIR_TEST)/RunTests.o $(TEST_OBJS)
+$(TEST_BIN): before_test $(OBJDIR_TEST)/RunTest.o $(TEST_OBJS)
 	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) $^ -o $(TEST_BIN) $(LIBDIR_DEBUG) $(LDFLAGS_DEBUG) $(LIB_DEBUG)
 
 test: $(TEST_BIN)
