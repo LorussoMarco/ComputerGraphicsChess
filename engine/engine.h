@@ -1,96 +1,79 @@
-/**
- * @file        engine.h
- * @brief       Graphics engine main include file
- *
- * @author
- */
 #pragma once
 
- //////////////
- // #INCLUDE //
- //////////////
+#define LIB_NAME      "Engine"
+#define LIB_VERSION   10
 
- // C++ Standard:
-#include <memory>
-#include <functional>
+#include <sstream>
 
-/////////////
-// VERSION //
-/////////////
+#include "Camera.h"
+#include "Common.h"
+#include "Material.h"
+#include "List.h"
+#include "Mesh.h"
 
-// Generic info:
-#ifdef _DEBUG
-#define LIB_NAME      "My Graphics Engine v0.1a (debug)"   ///< Library credits
-#else
-#define LIB_NAME      "My Graphics Engine v0.1a"          ///< Library credits
-#endif
-#define LIB_VERSION   10                                     ///< Library version (divide by 10)
+/**
+ * @class Engine
+ * @brief La classe principale del motore grafico.
+ *
+ * Questa classe gestisce l'inizializzazione del motore, la gestione delle finestre,
+ * il rendering, e la gestione della scena e delle camere.     necessario chiamare
+ * la funzione `init` prima di poter utilizzare qualsiasi altra funzione del motore.
+ * Alla fine,     necessario chiamare `quit` per liberare la memoria utilizzata.
+ */
+class LIB_API Engine
+{
+public:
 
-// Export API:
-#ifdef _WINDOWS
-#ifdef ENGINE_EXPORTS
-#define ENG_API __declspec(dllexport)
-#else
-#define ENG_API __declspec(dllimport)
-#endif      
-#else
-#define ENG_API
-#endif
+    // Inizializza il motore
+    static void init(const std::string windowTitle, const int windowWidth, const int windowHeight);
 
-///////////////
-// NAMESPACE //
-///////////////
+    // Getter
+    static std::shared_ptr<Camera> getActiveCamera();
+    static std::shared_ptr<Node> getScene();
 
-namespace Eng {
+    // Setter
+    static void setBackGround(const float red, const float green, const float blue);
+    static void setScene(const std::shared_ptr<Node> newScene);
+    static void setActiveCamera(const std::shared_ptr<Camera> newActiveCamera);
+    static void setScreenText(const std::string newText);
 
-    ///////////////////////
-    // MAIN ENGINE CLASS //
-    ///////////////////////
+    // Set Callback
+    static void setKeyboardCallback(void (*newKeyboardCallback) (const unsigned char key, const int mouseX, const int mouseY));
+    static void setBlinkingCallback(void (*callback)());
+    static void setMouseCallback(void(*newMouseCallback)(int button, int state, int mouseX, int mouseY));
+    static void setMethodSpecialCallback(void(*newSpecialCallback) (int key, int mouseX, int mouseY));
 
-    /**
-     * @brief Base engine main class. This class is a singleton.
-     */
-    class ENG_API Base final {
-    public:
-        // Singleton instance
-        static Base& getInstance();
 
-        // Lifecycle
-        bool init(const char* windowTitle, int width, int height);
-        bool free();
-        void run();
+    static bool isRunning();
+    static void render();
+    static void timerCallback(int value);
+    static void update();
+    static void clearScreen();
+    static void swapBuffers();
+    static void stop();
+    static void quit();
+    static std::shared_ptr<Node> findObjectByName(const std::string nameToFind);
+    static std::shared_ptr<Node> findObjectByID(int idToFind);
+    static std::shared_ptr<Node> getNodeByClick(int mouseX, int mouseY);
 
-        // Set callbacks
-        void setKeyboardCallback(std::function<void(unsigned char, int, int)> callback);
-        void setDisplayCallback(std::function<void()> callback);
-        void setReshapeCallback(std::function<void(int, int)> callback);
+private:
 
-        // Rendering utilities
-        void clearWindow();
-        void swapBuffers();
-        void setBackgroundColor(float r, float g, float b);
+    static void resizeCallback(const int width, const int height);
+    static void (*blinkingCallback)(); ///< Funzione di callback per il lampeggiamento.
+    static std::shared_ptr<Node> findObjectByName(const std::string nameToFind, const std::shared_ptr<Node> root);
+    static std::shared_ptr<Node> findObjectByID(int idToFind, const std::shared_ptr<Node> root);
 
-        // Status
-        bool isRunning() const;
+    static bool isInitializedFlag; ///< Flag che indica se il motore     stato inizializzato.
+    static bool isRunningFlag; ///< Flag che indica se il motore     in esecuzione.
+    static int windowId;  ///< ID della finestra.
 
-        // Viewport management
-        void resizeViewport(int width, int height);
+    static int windowWidth; ///< Larghezza della finestra.
+    static int windowHeight; ///< Altezza della finestra.
 
-    private:
-        // Private constructor/destructor
-        Base();
-        ~Base();
-
-        // Prevent copying
-        Base(const Base&) = delete;
-        void operator=(const Base&) = delete;
-
-        // Reserved data
-        struct Reserved;
-        std::unique_ptr<Reserved> reserved;
-
-        // Internal state
-        bool running;
-    };
-
-} // end of namespace Eng
+    static std::shared_ptr<Node> scene; ///< Puntatore alla scena.
+    static std::shared_ptr<Camera> activeCamera;  ///< Puntatore alla telecamera attiva.
+    static std::shared_ptr<Material> shadowMaterial; ///< Puntatore al materiale per le ombre.
+    static std::string screenText; ///< Testo da visualizzare sullo schermo.
+    static int frames; ///< Contatore di frames
+    static float fps; ///< Frames al secondo
+};

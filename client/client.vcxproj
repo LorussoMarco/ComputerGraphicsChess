@@ -52,13 +52,13 @@
 ;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>C:\scuola\SUPSI\ANNO 3\1 semestre\ingegneria del software 2\cg\dependencies\freeglut\include;..\engine</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\dependencies\freeimage\include;..\dependencies\freeglut\include;..\dependencies\glm\include;..\engine</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>..\engine\x64\Debug;..\dependencies\freeglut\lib\x64\Debug;..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>..\dependencies\freeimage\lib\x64\Debug;..\engine\x64\Debug;..\dependencies\freeglut\lib\x64\Debug;..\$(Platform)\$(Configuration)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>engine.lib;FreeImage.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
