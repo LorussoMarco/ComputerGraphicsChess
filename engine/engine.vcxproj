@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="CameraTest.cpp" />
+    <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="engine.cpp" />
     <ClCompile Include="EngineTest.cpp" />
     <ClCompile Include="Light.cpp" />
@@ -104,13 +105,18 @@
     <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="Object.cpp" />
     <ClCompile Include="ObjectTest.cpp" />
+    <ClCompile Include="OvoParser.cpp" />
+    <ClCompile Include="PerspectiveCamera.cpp" />
+    <ClCompile Include="PointLight.cpp" />
     <ClCompile Include="RunTest.cpp" />
+    <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Texture.cpp" />
     <ClCompile Include="TextureTest.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
+    <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="engine.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="List.h" />
@@ -119,6 +125,10 @@
     <ClInclude Include="MeshData.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Object.h" />
+    <ClInclude Include="OvoParser.h" />
+    <ClInclude Include="PerspectiveCamera.h" />
+    <ClInclude Include="PointLight.h" />
+    <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Texture.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
