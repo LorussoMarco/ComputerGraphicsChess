@@ -24,6 +24,7 @@ public:
     // Carica un'immagine da un percorso specificato.
     Texture(const std::string path);
     ~Texture();
+    bool isLoaded() const;
 
     void render(const glm::mat4 viewMatrix) const override;
 
