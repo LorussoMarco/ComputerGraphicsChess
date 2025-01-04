@@ -6,6 +6,18 @@
 #include <OvoParser.h>
 #include <PointLight.h>
 #include <Material.h>
+#include <algorithm> // Per std::find
+
+#include "ChessLogic.h"
+
+namespace Constants {
+    constexpr inline int MOUSE_LEFT_BUTTON = 0;
+    constexpr inline int MOUSE_DOWN = 0;
+    constexpr inline int KEYBOARD_KEY_UP = 101;
+    constexpr inline int KEYBOARD_KEY_DOWN = 103;
+    constexpr inline int KEYBOARD_KEY_LEFT = 100;
+    constexpr inline int KEYBOARD_KEY_RIGHT = 102;
+}
 
 // Camera reference
 std::shared_ptr<PerspectiveCamera> camera;
@@ -144,6 +156,38 @@ int main() {
     // Inizializza il motore con titolo finestra, larghezza e altezza
     Engine::init("Test Scene", 800, 600);
 
+    ChessLogic::init();
+
+    static std::list<std::string> stringList = {"Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001"};
+
+    Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
+        {
+            if (button == Constants::MOUSE_LEFT_BUTTON && state == Constants::MOUSE_DOWN)
+            {
+                // Ottiene l'oggetto selezionato.
+                std::shared_ptr<Node> selectedNode = Engine::getNodeByClick(mouseX, mouseY);
+
+                if (selectedNode != nullptr)
+                {
+                    std::string pieceName = selectedNode->getName();
+
+                    // Controlla se il nome è nella lista globale
+                    if (std::find(stringList.begin(), stringList.end(), pieceName) != stringList.end())
+                    {
+                        std::cout << "Il pezzo \"" << pieceName << "\" non può essere selezionato poiché è nella lista." << std::endl;
+                    }
+                    else
+                    {
+                        ChessLogic::selectPiece(pieceName);
+                    }
+                }
+                else
+                {
+                    std::cout << "Nessun oggetto selezionato." << std::endl;
+                }
+            }
+        });
+
     // Crea un nodo di scena e lo imposta
     std::shared_ptr<Node> scene = std::make_shared<Node>();
     scene->setName("RootNode");
@@ -164,7 +208,7 @@ int main() {
     setupCameraAndLightMovement();
 
     // Carica una scena da file OVO e la imposta
-    std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./fff.ovo");
+    std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");
     if (ovoScene) {
         scene->addChild(ovoScene);
     }
