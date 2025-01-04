@@ -90,3 +90,7 @@ void LIB_API Texture::render(const glm::mat4 viewMatrix) const
     // Abilita l'uso delle texture 2D in OpenGL.
     glEnable(GL_TEXTURE_2D);
 }
+
+bool Texture::isLoaded() const {
+    return (_textureId != 0 && _bitmap != nullptr);
+}

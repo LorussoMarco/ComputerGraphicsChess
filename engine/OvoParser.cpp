@@ -97,6 +97,9 @@ std::shared_ptr<Node> LIB_API OVOParser::fromFile(const std::string filePath)
         uint8_t* chunkData = new uint8_t[chunkSize];
         fread(chunkData, sizeof(uint8_t), chunkSize, file);
 
+        DEBUG("Reading chunk: Type=" << chunkType << ", Size=" << chunkSize);
+
+
         // Gestisce i chunk in base al loro tipo.
         if (chunkType == 0) // Version
         {
@@ -478,6 +481,12 @@ std::pair<std::shared_ptr<Material>, std::string> LIB_API OVOParser::parseMateri
         std::string materialName = OVOParser::parseString(chunkData + chunkPointer);
         chunkPointer += static_cast<uint32_t>(materialName.length() + 1);
         material->setName(materialName);
+        if (materialName == "[none]") {
+            WARNING("Material not found for mesh. Using default.");
+        }
+        else {
+            DEBUG("Material loaded: " << materialName);
+        }
     }
 
     // Emission
@@ -523,13 +532,14 @@ std::pair<std::shared_ptr<Material>, std::string> LIB_API OVOParser::parseMateri
         // Se ha una texture
         if (textureName != "[none]")
         {
-            std::string fullTexturePath = "./fileOvo/" + textureName;
+            std::string fullTexturePath = textureName;
 
             // Crea un oggetto Texture e lo memorizza in un shared_ptr.
             std::shared_ptr<Texture> texture = std::make_shared<Texture>(fullTexturePath);
 
             // Assegna la texture al materiale.
             material->setTexture(texture);
+
         }
     }
 
