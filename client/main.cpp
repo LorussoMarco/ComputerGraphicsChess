@@ -60,6 +60,12 @@ void setupCameraAndLightMovement() {
         case 'd': // Muove la camera a destra
             cameraPosition.x += cameraSpeed;
             break;
+        case 'q': // Muove la camera a sinistra
+            cameraPosition.y -= cameraSpeed;
+            break;
+        case 'e': // Muove la camera a destra
+            cameraPosition.y += cameraSpeed;
+            break;
         case 'i': // Muove la luce in avanti
             lightPosition.z -= lightSpeed;
             break;
@@ -83,9 +89,21 @@ void setupCameraAndLightMovement() {
             break;
         }
 
+        
+
         // Aggiorna la posizione della camera e della luce
         camera->setPosition(cameraPosition);
         lightAbove->setPosition(lightPosition);
+
+        glm::vec3 cameraRotation = camera->getRotation();
+        std::cout << "Camera Position: (" 
+            << cameraPosition.x << ", "
+            << cameraPosition.y << ", "
+            << cameraPosition.z << ")" << std::endl;
+        std::cout << "Camera Rotation: ("
+            << cameraRotation.x << ", "
+            << cameraRotation.y << ", "
+            << cameraRotation.z << ")" << std::endl;
         });
 
     Engine::setMethodSpecialCallback([](int key, int mouseX, int mouseY) {
@@ -109,6 +127,16 @@ void setupCameraAndLightMovement() {
 
         // Aggiorna la rotazione della camera
         camera->setRotation(rotation);
+
+        glm::vec3 cameraPosition = camera->getPosition();
+        std::cout << "Camera Position: ("
+            << cameraPosition.x << ", "
+            << cameraPosition.y << ", "
+            << cameraPosition.z << ")" << std::endl;
+        std::cout << "Camera Rotation: ("
+            << rotation.x << ", "
+            << rotation.y << ", "
+            << rotation.z << ")" << std::endl;
         });
 }
 
@@ -127,8 +155,8 @@ int main() {
     // Crea una telecamera prospettica e la imposta come attiva
     camera = std::make_shared<PerspectiveCamera>();
     camera->setName("MainCamera");
-    camera->setPosition(glm::vec3(0.0f, 110.0f, 100.0f)); // Posizione
-    camera->setRotation(glm::vec3(-40.0f, 0.0f, 0.0f));  // Rotazione
+    camera->setPosition(glm::vec3(-10.0f, 60.0f, 0.0f)); // Posizione
+    camera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f));  // Rotazione
     scene->addChild(camera);
     Engine::setActiveCamera(camera);
 
@@ -136,7 +164,7 @@ int main() {
     setupCameraAndLightMovement();
 
     // Carica una scena da file OVO e la imposta
-    std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./table2.ovo");
+    std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./fff.ovo");
     if (ovoScene) {
         scene->addChild(ovoScene);
     }

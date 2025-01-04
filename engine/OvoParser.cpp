@@ -532,7 +532,7 @@ std::pair<std::shared_ptr<Material>, std::string> LIB_API OVOParser::parseMateri
         // Se ha una texture
         if (textureName != "[none]")
         {
-            std::string fullTexturePath = "./fileOvo/" + textureName;
+            std::string fullTexturePath = textureName;
 
             // Crea un oggetto Texture e lo memorizza in un shared_ptr.
             std::shared_ptr<Texture> texture = std::make_shared<Texture>(fullTexturePath);
