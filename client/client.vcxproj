@@ -85,6 +85,7 @@
   <ItemGroup>
     <ClCompile Include="ChessBoard.cpp" />
     <ClCompile Include="ChessLogic.cpp" />
+    <ClCompile Include="Direction.h" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Piece.cpp" />
   </ItemGroup>
