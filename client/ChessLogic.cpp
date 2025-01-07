@@ -39,6 +39,7 @@ void ChessLogic::selectPiece(const std::string& pieceName)
 
 	if (pieceName == "none") 
 	{
+		
 		_selectedPiece = Piece();
 		return;
 	}
