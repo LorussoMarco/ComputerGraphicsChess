@@ -657,3 +657,43 @@ std::shared_ptr<Node> LIB_API Engine::findObjectByID(int idToFind, const std::sh
 
     return nullptr;
 }
+
+bool LIB_API Engine::removeObject(const std::shared_ptr<Node>& nodeToRemove)
+{
+    if (!scene)
+    {
+        std::cerr << "Error: Scene is not set. Cannot remove object." << std::endl;
+        return false;
+    }
+
+    // Chiama la versione con due parametri, usando `scene` come radice
+    return removeObject(nodeToRemove, scene);
+}
+
+bool LIB_API Engine::removeObject(const std::shared_ptr<Node>& nodeToRemove, const std::shared_ptr<Node>& root)
+{
+
+    auto& children = root->getChildren(); // Ottieni i figli del nodo corrente
+
+    // Itera sui figli del nodo radice
+    for (auto it = children.begin(); it != children.end(); ++it)
+    {
+        if (*it == nodeToRemove)
+        {
+            // Nodo trovato, rimuovilo dal vettore dei figli
+            children.erase(it);
+            std::cout << "Removed node: " << nodeToRemove->getName() << std::endl;
+            return true;
+        }
+
+        // Ricorsione per cercare nei figli
+        if (removeObject(nodeToRemove, *it))
+        {
+            return true;
+        }
+    }
+
+    return false; // Nodo non trovato
+}
+
+

@@ -3,6 +3,10 @@
 
 Piece::Piece() 
 {
+	this->_id = -1;
+	this->_row = -1;
+	this->_col = -1;
+	this->_color = false;
 }
 
 Piece::Piece(const int id,  const int row, const int col, const std::string name, const bool color)
@@ -12,6 +16,10 @@ Piece::Piece(const int id,  const int row, const int col, const std::string name
 	this->setRow(row);
 	this->_name = name;
 	this->_color = color;
+}
+
+bool Piece::isNull() const {
+	return _id == -1;
 }
 
 // Getter 

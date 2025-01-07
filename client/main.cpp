@@ -180,7 +180,10 @@ int main() {
                     }
                     else
                     {
-                        ChessLogic::selectPiece(pieceName);
+                        if (ChessLogic::isPieceSelected() == false) 
+                        {
+                            ChessLogic::selectPiece(pieceName);
+                        }
                     }
                 }
                 else

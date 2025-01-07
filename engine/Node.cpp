@@ -141,6 +141,12 @@ std::vector<std::shared_ptr<Node>> LIB_API Node::getChildren() const
     return this->children;
 }
 
+std::vector<std::shared_ptr<Node>>& Node::getChildren()
+{
+    return this->children; // Restituisce una referenza modificabile
+}
+
+
 /**
  * @brief Restituisce la priorita' del nodo.
  *

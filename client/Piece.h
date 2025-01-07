@@ -14,6 +14,7 @@ public:
 	int getRow() const;
 	std::string getName() const;
 	bool getColor() const;
+	bool isNull() const;
 
 	// Setter
 	void setCol(const int newCol);
