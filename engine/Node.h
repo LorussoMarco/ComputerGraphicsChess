@@ -36,7 +36,7 @@ public:
     void setPriority(int p);
 
     void addChild(const std::shared_ptr<Node> newChild);
-
+    void removeAllChildren();
     // Renderizza un node
     void render(const glm::mat4 viewMatrix) const override;
 

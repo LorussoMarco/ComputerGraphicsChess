@@ -57,7 +57,7 @@ public:
     static std::shared_ptr<Node> getNodeByClick(int mouseX, int mouseY);
     static bool removeObject(const std::shared_ptr<Node>& nodeToRemove, const std::shared_ptr<Node>& root);
     static bool removeObject(const std::shared_ptr<Node>& nodeToRemove);
-
+    static void removeAllObjects();
 private:
 
     static void resizeCallback(const int width, const int height);

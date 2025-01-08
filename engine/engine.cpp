@@ -696,4 +696,19 @@ bool LIB_API Engine::removeObject(const std::shared_ptr<Node>& nodeToRemove, con
     return false; // Nodo non trovato
 }
 
+/**
+ * @brief Rimuove tutti i nodi figli dalla scena corrente.
+ */
+void LIB_API Engine::removeAllObjects() {
+    if (!scene) {
+        std::cerr << "Error: Scene is not set. Cannot remove objects." << std::endl;
+        return;
+    }
+
+    // Rimuove tutti i figli della scena
+    scene->removeAllChildren();
+    std::cout << "All objects have been removed from the scene." << std::endl;
+}
+
+
 

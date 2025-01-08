@@ -9,6 +9,7 @@
 #include <algorithm> // Per std::find
 
 #include "ChessLogic.h"
+#include "main.h"
 
 namespace Constants {
     constexpr inline int MOUSE_LEFT_BUTTON = 0;
@@ -33,6 +34,42 @@ float lightSpeed = 5.0f;
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
 
+/*void camMovementWS(bool dir)
+{
+    glm::mat4 currentTransform = camera->getLocalMatrix();
+    glm::vec3 trans = (dir) ? glm::vec3(0, 0, 1.0f) : glm::vec3(0, 0, -1.0f);
+
+    currentTransform = glm::translate(currentTransform, trans);
+    camera->setBaseMatrix(currentTransform);
+}
+
+void camMovementAD(bool dir)
+{
+    glm::mat4 currentTransform = camera->getLocalMatrix();
+    glm::vec3 trans = (dir) ? glm::vec3(0, 1.0f, 0) : glm::vec3(0, -1.0f, 0);
+
+    currentTransform = glm::translate(currentTransform, trans);
+    camera->setBaseMatrix(currentTransform);
+}
+
+void camMovementQE(bool dir)
+{
+    glm::mat4 currentTransform = camera->getLocalMatrix();
+    float rotation = (dir) ? -0.05f : 0.05f;
+
+    currentTransform = glm::rotate(currentTransform,rotation, glm::vec3(0.0f, 1.0f, 0.0f));
+    camera->setBaseMatrix(currentTransform);
+}
+
+void camMovementTG(bool dir)
+{
+    glm::mat4 currentTransform = camera->getLocalMatrix();
+    float rotation = (dir) ? -0.05f : 0.05f;
+
+    currentTransform = glm::rotate(currentTransform, rotation, glm::vec3(1.0f, 0.0f, 0.0f));
+    camera->setBaseMatrix(currentTransform);
+}*/
+
 void addLightAboveScene() {
     // Crea una luce di tipo puntuale
     lightAbove = std::make_shared<PointLight>();
@@ -54,104 +91,35 @@ void addLightAboveScene() {
     Engine::getScene()->addChild(lightAbove);
 }
 
-/*void setupCameraAndLightMovement() {
-    Engine::setKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY) {
-        // Ottieni la posizione corrente della camera e della luce
-        glm::vec3 cameraPosition = camera->getPosition();
-        glm::vec3 lightPosition = lightAbove->getPosition();
+void resetScene() {
+    // Ottieni la scena corrente
+    std::shared_ptr<Node> scene = Engine::getScene();
 
-        switch (key) {
-        case 'w': // Muove la camera in avanti
-            cameraPosition.z -= cameraSpeed;
-            break;
-        case 's': // Muove la camera indietro
-            cameraPosition.z += cameraSpeed;
-            break;
-        case 'a': // Muove la camera a sinistra
-            cameraPosition.x -= cameraSpeed;
-            break;
-        case 'd': // Muove la camera a destra
-            cameraPosition.x += cameraSpeed;
-            break;
-        case 'q': // Muove la camera a sinistra
-            cameraPosition.y -= cameraSpeed;
-            break;
-        case 'e': // Muove la camera a destra
-            cameraPosition.y += cameraSpeed;
-            break;
-        case 'i': // Muove la luce in avanti
-            lightPosition.z -= lightSpeed;
-            break;
-        case 'k': // Muove la luce indietro
-            lightPosition.z += lightSpeed;
-            break;
-        case 'j': // Muove la luce a sinistra
-            lightPosition.x -= lightSpeed;
-            break;
-        case 'l': // Muove la luce a destra
-            lightPosition.x += lightSpeed;
-            break;
-        case 'u': // Muove la luce verso l'alto
-            lightPosition.y += lightSpeed;
-            break;
-        case 'o': // Muove la luce verso il basso
-            lightPosition.y -= lightSpeed;
-            break;
-        case 27: // ESC per uscire
-            Engine::stop();
-            break;
-        }
+    // Rimuovi tutti i figli della scena (inclusi camera e luce)
+    scene->removeAllChildren();
 
-        
+    // Riaggiungi la luce sopra la scena
+    addLightAboveScene();
+    // Riaggiungi la camera prospettica
+    camera = std::make_shared<PerspectiveCamera>();
+    camera->setName("MainCamera");
+    camera->setPosition(glm::vec3(-10.0f, 60.0f, 0.0f)); // Posizione
+    camera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f)); // Rotazione
+    scene->addChild(camera);
+    Engine::setActiveCamera(camera);
 
-        // Aggiorna la posizione della camera e della luce
-        camera->setPosition(cameraPosition);
-        lightAbove->setPosition(lightPosition);
+    // Ricarica la scena dal file OVO
+    std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");
+    if (ovoScene) {
+        scene->addChild(ovoScene);
+        std::cout << "[Info] Scene successfully reset." << std::endl;
+    }
+    else {
+        std::cerr << "[Error] Unable to reload OVO file." << std::endl;
+    }
 
-        glm::vec3 cameraRotation = camera->getRotation();
-        std::cout << "Camera Position: (" 
-            << cameraPosition.x << ", "
-            << cameraPosition.y << ", "
-            << cameraPosition.z << ")" << std::endl;
-        std::cout << "Camera Rotation: ("
-            << cameraRotation.x << ", "
-            << cameraRotation.y << ", "
-            << cameraRotation.z << ")" << std::endl;
-        });
-
-    Engine::setMethodSpecialCallback([](int key, int mouseX, int mouseY) {
-        // Ottieni la rotazione corrente della camera
-        glm::vec3 rotation = camera->getRotation();
-
-        switch (key) {
-        case 101: // Freccia su
-            rotation.x -= cameraRotationSpeed;
-            break;
-        case 103: // Freccia giù
-            rotation.x += cameraRotationSpeed;
-            break;
-        case 100: // Freccia sinistra
-            rotation.y -= cameraRotationSpeed;
-            break;
-        case 102: // Freccia destra
-            rotation.y += cameraRotationSpeed;
-            break;
-        }
-
-        // Aggiorna la rotazione della camera
-        camera->setRotation(rotation);
-
-        glm::vec3 cameraPosition = camera->getPosition();
-        std::cout << "Camera Position: ("
-            << cameraPosition.x << ", "
-            << cameraPosition.y << ", "
-            << cameraPosition.z << ")" << std::endl;
-        std::cout << "Camera Rotation: ("
-            << rotation.x << ", "
-            << rotation.y << ", "
-            << rotation.z << ")" << std::endl;
-        });
-}*/
+    ChessLogic::resetLogic();
+}
 
 int main() {
     // Inizializza il motore con titolo finestra, larghezza e altezza
@@ -159,8 +127,8 @@ int main() {
 
     ChessLogic::initialPopulate();
     ChessLogic::init();
-
     static std::list<std::string> stringList = {"Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001"};
+
 
     Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
         {
@@ -199,31 +167,41 @@ int main() {
             switch (key) {
             case Constants::KEYBOARD_KEY_UP:
                 ChessLogic::move(Direction::UP);
+                //camMovementWS(false);
                 break;
 
             case Constants::KEYBOARD_KEY_DOWN:
                 ChessLogic::move(Direction::DOWN);
+                //camMovementWS(true);
                 break;
 
             case Constants::KEYBOARD_KEY_LEFT:
                 ChessLogic::move(Direction::LEFT);
+                //camMovementAD(false);
                 break;
 
             case Constants::KEYBOARD_KEY_RIGHT:
                 ChessLogic::move(Direction::RIGHT);
+                //camMovementAD(true);
+                break;
+          
+            case 27: // ESC per uscire
+                Engine::stop();
                 break;
             }
 
         });
 
     Engine::setKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY) {
-        
         switch (key) {
-        case 13: 
-            ChessLogic::selectPiece("none");
+        case Constants::KEYBOARD_KEY_ENTER: 
+            ChessLogic::selectPiece("none"); 
+            break;
+        case 'r': // Tasto 'r' per resettare la scena
+            resetScene();
             break;
         }
-    });
+        });
 
     // Crea un nodo di scena e lo imposta
     std::shared_ptr<Node> scene = std::make_shared<Node>();
@@ -257,7 +235,12 @@ int main() {
     while (Engine::isRunning()) {
         Engine::update();       // Gestisce eventi e callback
         Engine::clearScreen();  // Pulisce lo schermo per il nuovo frame
-        Engine::render();       // Renderizza la scena
+        Engine::render();    // Renderizza la scena
+        if (ChessLogic::getWinner() != "None")
+        {
+            std::cout << "Partita terminata! Vince il giocatore " << ChessLogic::getWinner() << "." << std::endl;
+            resetScene();             // Reset della scena grafica
+        }
         Engine::swapBuffers();  // Scambia i buffer per visualizzare il frame
     }
 
@@ -266,3 +249,6 @@ int main() {
 
     return 0;
 }
+
+
+

@@ -5,7 +5,35 @@ ChessBoard ChessLogic::_chessBoard;
 std::vector<Piece> ChessLogic::_pieces;
 Piece ChessLogic::_selectedPiece;
 bool ChessLogic::_isPieceSelected = false;
+bool ChessLogic::_isWhiteTurn = true;
+bool ChessLogic::_isMoveInProgress = false;
+std::string ChessLogic::_winner = "None";
 
+
+std::string ChessLogic::getWinner()
+{
+	return _winner;
+}
+
+bool ChessLogic::isWhiteTurn()
+{
+	return _isWhiteTurn;
+}
+
+void ChessLogic::setWhiteTurn(bool isWhite)
+{
+	_isWhiteTurn = isWhite;
+}
+
+bool ChessLogic::isMoveInProgress()
+{
+	return _isMoveInProgress;
+}
+
+void ChessLogic::setMoveInProgress(bool isInProgress)
+{
+	_isMoveInProgress = isInProgress;
+}
 
 bool ChessLogic::isPieceSelected() 
 {
@@ -40,18 +68,24 @@ bool ChessLogic::checkAndHandleCollisions()
 		std::string selectedFullName = selectedColor + _selectedPiece.getName() + "." + std::to_string(_selectedPiece.getId());
 
 		if (it->getCol() == _selectedPiece.getCol() &&
-			it->getRow() == _selectedPiece.getRow()
+			it->getRow() == _selectedPiece.getRow() &&
+			currentFullName != selectedFullName
 			) // Confronta i nomi completi
 		{
 			
-			if (currentFullName == selectedFullName) {
-				continue;
-			}
 			if (it->getColor() == _selectedPiece.getColor())
 			{
 				sameColor = true;
 				break;
 			}
+
+			if (it->getName() == "King")
+			{
+				_winner = _selectedPiece.getColor() ? "White" : "Black";
+				std::cout << "Il re è stato catturato! Vince il giocatore " << _winner << "!" << std::endl;
+				return true; // Indica che la collisione ha portato alla vittoria
+			}
+
 			// Trova il nodo del pezzo nella scena
 			std::shared_ptr<Node> pieceNode = std::dynamic_pointer_cast<Node>(
 				Engine::findObjectByName(currentFullName)
@@ -62,12 +96,15 @@ bool ChessLogic::checkAndHandleCollisions()
 			{
 				Engine::removeObject(pieceNode); // Rimuovi il nodo dalla scena
 				_isPieceSelected = false;
+				
 				std::cout << "Removed piece from scene: " << currentFullName << std::endl;
 			}
 
 			// Rimuovi il pezzo dal vettore
 			it = _pieces.erase(it); // Rimuove l'elemento e restituisce un iteratore valido
 			_selectedPiece = Piece();
+			_isMoveInProgress = false;
+			_isWhiteTurn = !_isWhiteTurn;
 			return true; // Esci dopo aver gestito la collisione
 		}
 		else
@@ -76,12 +113,14 @@ bool ChessLogic::checkAndHandleCollisions()
 		}
 		
 	}
-	if (sameColor = true) {
+	if (sameColor == true) {
 		_isPieceSelected = true;
 	}
 	else
 	{
 		_selectedPiece = Piece();
+		_isMoveInProgress = false;
+		_isWhiteTurn = !_isWhiteTurn;
 	}
 	return false; // Nessuna collisione trovata
 }
@@ -97,7 +136,6 @@ void ChessLogic::init()
 
 void ChessLogic::selectPiece(const std::string& pieceName)
 {
-	
 	// Resetta il colore di emissione del pezzo precedentemente selezionato
 	std::string color = _selectedPiece.getColor() ? "White" : "Black";
 	std::string fullName = color + _selectedPiece.getName() + "." + std::to_string(_selectedPiece.getId());
@@ -112,10 +150,8 @@ void ChessLogic::selectPiece(const std::string& pieceName)
 	if (pieceName == "none")
 	{
 		checkAndHandleCollisions();
-			
 		return;
 	}
-	
 
 	// Trova la mesh del nuovo pezzo selezionato
 	std::shared_ptr<Mesh> selectedPieceMesh = std::dynamic_pointer_cast<Mesh>(
@@ -136,17 +172,24 @@ void ChessLogic::selectPiece(const std::string& pieceName)
 
 		if (fullName == pieceName)
 		{
+			// Consenti solo di selezionare pezzi del colore corretto
+			if (piece.getColor() != _isWhiteTurn)
+			{
+				std::cout << "Non è il turno del giocatore " << (piece.getColor() ? "bianco" : "nero") << "." << std::endl;
+				return;
+			}
+
 			_selectedPiece = piece; // Copia diretta del pezzo trovato
-			
 			std::cout << "Selected piece: " << piece.getRow() << ":::::" << piece.getCol() << std::endl;
 			_isPieceSelected = true;
+			_isMoveInProgress = true;
 			break;
 		}
 	}
 
 	std::cout << "Selected piece: " << pieceName << std::endl;
-
 }
+
 
 
 
@@ -185,19 +228,17 @@ void ChessLogic::move(const Direction direction)
 	// Controlla se la posizione è cambiata
 	if (newRow == _selectedPiece.getRow() && newCol == _selectedPiece.getCol())
 	{
-		// Nessun movimento valido, esci senza aggiornare
 		std::cout << "Move out of range. No update performed." << std::endl;
 		return;
 	}
 
-	// Aggiorna le coordinate di `_selectedPiece`
+	// Aggiorna le coordinate del pezzo selezionato
 	_selectedPiece.setRow(newRow);
 	_selectedPiece.setCol(newCol);
 
 	// Aggiorna le coordinate nel vettore `_pieces`
 	for (auto& piece : _pieces)
 	{
-		// Confronta per ID per trovare il pezzo corretto
 		if (piece.getId() == _selectedPiece.getId() &&
 			piece.getName() == _selectedPiece.getName() &&
 			piece.getColor() == _selectedPiece.getColor())
@@ -208,11 +249,13 @@ void ChessLogic::move(const Direction direction)
 		}
 	}
 
-	// Stampa la posizione aggiornata
-	std::cout << "Row: " << _selectedPiece.getRow() << ", Col: " << _selectedPiece.getCol() << std::endl;
-
 	// Aggiorna la grafica
 	ChessLogic::updateGraphics(direction);
+
+	// Segna che la mossa è in corso
+	_isMoveInProgress = true;
+
+	std::cout << "Mossa in corso. Row: " << _selectedPiece.getRow() << ", Col: " << _selectedPiece.getCol() << std::endl;
 }
 
 
@@ -385,4 +428,34 @@ void ChessLogic::printPieces()
 	}
 
 	std::cout << "========================================================\n";
+}
+
+/**
+ * @brief Resetta lo stato logico del gioco di scacchi.
+ *
+ * Questa funzione reimposta la scacchiera, cancella tutti i pezzi attuali
+ * e ripopola la scacchiera con i pezzi iniziali.
+ */
+void ChessLogic::resetLogic()
+{
+	// Resetta la scacchiera
+	_chessBoard = ChessBoard();
+
+	// Cancella i pezzi esistenti
+	_pieces.clear();
+
+	// Resetta il pezzo selezionato
+	_selectedPiece = Piece();
+	_isPieceSelected = false;
+	_isMoveInProgress = false;
+	_isWhiteTurn = true;
+	_winner = "None";
+
+	// Ripopola i pezzi iniziali
+	initialPopulate();
+
+	std::cout << "[Info] Chess logic successfully reset." << std::endl;
+
+	// Stampa i pezzi attuali per conferma
+	printPieces();
 }
