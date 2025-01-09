@@ -9,6 +9,10 @@ bool ChessLogic::_isWhiteTurn = true;
 bool ChessLogic::_isMoveInProgress = false;
 std::string ChessLogic::_winner = "None";
 
+static Piece _lastSelectedPiece;
+static glm::vec3 _originalPosition;
+static int oldRow;
+static int oldCol;
 
 std::string ChessLogic::getWinner()
 {
@@ -46,10 +50,11 @@ ChessLogic::ChessLogic()
 	this->_pieces = {};
 }
 
-std::vector<Piece> ChessLogic::getPieces() const
+std::vector<Piece> ChessLogic::getPieces()
 {
-	return this->_pieces;
+	return _pieces;
 }
+
 
 bool ChessLogic::checkAndHandleCollisions()
 {
@@ -179,6 +184,15 @@ void ChessLogic::selectPiece(const std::string& pieceName)
 				return;
 			}
 
+			_lastSelectedPiece = piece;
+			std::shared_ptr<Node> node = std::dynamic_pointer_cast<Node>(Engine::findObjectByName(fullName));
+			if (node) {
+				_originalPosition = node->getPosition();
+				oldRow = piece.getRow();
+				oldCol = piece.getCol();
+				std::cout << "[DEBUG] Original position stored for piece " << pieceName << ": " << glm::to_string(_originalPosition) << std::endl;
+			}
+
 			_selectedPiece = piece; // Copia diretta del pezzo trovato
 			std::cout << "Selected piece: " << piece.getRow() << ":::::" << piece.getCol() << std::endl;
 			_isPieceSelected = true;
@@ -190,6 +204,42 @@ void ChessLogic::selectPiece(const std::string& pieceName)
 	std::cout << "Selected piece: " << pieceName << std::endl;
 }
 
+
+void ChessLogic::undoLastMove() {
+	if (_lastSelectedPiece.isNull()) {
+		std::cout << "[Info] Nessuna mossa da annullare." << std::endl;
+		return;
+	}
+
+	// Trova il nodo corrispondente al pezzo selezionato
+	std::string fullName = (_lastSelectedPiece.getColor() ? "White" : "Black") +
+		_lastSelectedPiece.getName() + "." + std::to_string(_lastSelectedPiece.getId());
+
+	auto node = std::dynamic_pointer_cast<Node>(Engine::findObjectByName(fullName));
+	if (node) {
+		// Ripristina la posizione originale
+		node->setPosition(_originalPosition);
+		std::cout << "[Debug] Position restored for piece " << fullName << ": " << glm::to_string(_originalPosition) << std::endl;
+
+		// Aggiorna lo stato logico del pezzo
+		for (auto& piece : _pieces) {
+			if (piece.getId() == _lastSelectedPiece.getId() && piece.getName() == _lastSelectedPiece.getName() && piece.getColor() == _lastSelectedPiece.getColor()) {
+				piece.setRow(oldRow);
+				piece.setCol(oldCol);
+				break;
+			}
+		}
+
+		// Reset del pezzo selezionato
+		_lastSelectedPiece = Piece();
+		_originalPosition = glm::vec3(0.0f);
+		_isPieceSelected = false;
+		_isMoveInProgress = false;
+	}
+	else {
+		std::cout << "[Error] Node not found for piece: " << fullName << std::endl;
+	}
+}
 
 
 
@@ -285,16 +335,16 @@ void ChessLogic::updateGraphics(Direction direction)
 	switch (direction)
 	{
 	case Direction::UP:
-		offset = glm::vec3(3.0f, 0.0f, 0.0f); // Spostamento verso l'alto
+		offset = glm::vec3(2.85f, 0.0f, 0.0f); // Spostamento verso l'alto
 		break;
 	case Direction::DOWN:
-		offset = glm::vec3(-3.0f, 0.0f, 0.0f); // Spostamento verso il basso
+		offset = glm::vec3(-2.85f, 0.0f, 0.0f); // Spostamento verso il basso
 		break;
 	case Direction::LEFT:
-		offset = glm::vec3(0.0f, 0.0f, -3.0f); // Spostamento a sinistra
+		offset = glm::vec3(0.0f, 0.0f, -2.85f); // Spostamento a sinistra
 		break;
 	case Direction::RIGHT:
-		offset = glm::vec3(0.0f, 0.0f, 3.0f); // Spostamento a destra
+		offset = glm::vec3(0.0f, 0.0f, 2.85f); // Spostamento a destra
 		break;
 	default:
 		std::cerr << "Error: Invalid direction!" << std::endl;

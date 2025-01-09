@@ -6,7 +6,7 @@
 #include <OvoParser.h>
 #include <PointLight.h>
 #include <Material.h>
-#include <algorithm> // Per std::find
+#include <algorithm> 
 
 #include "ChessLogic.h"
 
@@ -33,41 +33,6 @@ float lightSpeed = 5.0f;
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
 
-/*void camMovementWS(bool dir)
-{
-    glm::mat4 currentTransform = camera->getLocalMatrix();
-    glm::vec3 trans = (dir) ? glm::vec3(0, 0, 1.0f) : glm::vec3(0, 0, -1.0f);
-
-    currentTransform = glm::translate(currentTransform, trans);
-    camera->setBaseMatrix(currentTransform);
-}
-
-void camMovementAD(bool dir)
-{
-    glm::mat4 currentTransform = camera->getLocalMatrix();
-    glm::vec3 trans = (dir) ? glm::vec3(0, 1.0f, 0) : glm::vec3(0, -1.0f, 0);
-
-    currentTransform = glm::translate(currentTransform, trans);
-    camera->setBaseMatrix(currentTransform);
-}
-
-void camMovementQE(bool dir)
-{
-    glm::mat4 currentTransform = camera->getLocalMatrix();
-    float rotation = (dir) ? -0.05f : 0.05f;
-
-    currentTransform = glm::rotate(currentTransform,rotation, glm::vec3(0.0f, 1.0f, 0.0f));
-    camera->setBaseMatrix(currentTransform);
-}
-
-void camMovementTG(bool dir)
-{
-    glm::mat4 currentTransform = camera->getLocalMatrix();
-    float rotation = (dir) ? -0.05f : 0.05f;
-
-    currentTransform = glm::rotate(currentTransform, rotation, glm::vec3(1.0f, 0.0f, 0.0f));
-    camera->setBaseMatrix(currentTransform);
-}*/
 
 void addLightAboveScene() {
     // Crea una luce di tipo puntuale
@@ -102,7 +67,7 @@ void resetScene() {
     // Riaggiungi la camera prospettica
     camera = std::make_shared<PerspectiveCamera>();
     camera->setName("MainCamera");
-    camera->setPosition(glm::vec3(-10.0f, 60.0f, 0.0f)); // Posizione
+    camera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
     camera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f)); // Rotazione
     scene->addChild(camera);
     Engine::setActiveCamera(camera);
@@ -126,8 +91,7 @@ int main() {
 
     ChessLogic::initialPopulate();
     ChessLogic::init();
-    static std::list<std::string> stringList = {"Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001"};
-
+    static std::list<std::string> stringList = { "Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001" };
 
     Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
         {
@@ -147,7 +111,7 @@ int main() {
                     }
                     else
                     {
-                        if (ChessLogic::isPieceSelected() == false) 
+                        if (ChessLogic::isPieceSelected() == false)
                         {
                             ChessLogic::selectPiece(pieceName);
                         }
@@ -162,42 +126,40 @@ int main() {
 
     Engine::setMethodSpecialCallback([](int key, int mouseX, int mouseY)
         {
-            
             switch (key) {
             case Constants::KEYBOARD_KEY_UP:
                 ChessLogic::move(Direction::UP);
-                //camMovementWS(false);
                 break;
 
             case Constants::KEYBOARD_KEY_DOWN:
                 ChessLogic::move(Direction::DOWN);
-                //camMovementWS(true);
                 break;
 
             case Constants::KEYBOARD_KEY_LEFT:
                 ChessLogic::move(Direction::LEFT);
-                //camMovementAD(false);
                 break;
 
             case Constants::KEYBOARD_KEY_RIGHT:
                 ChessLogic::move(Direction::RIGHT);
-                //camMovementAD(true);
                 break;
-          
+
             case 27: // ESC per uscire
                 Engine::stop();
                 break;
             }
-
         });
 
     Engine::setKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY) {
         switch (key) {
-        case Constants::KEYBOARD_KEY_ENTER: 
-            ChessLogic::selectPiece("none"); 
+        case Constants::KEYBOARD_KEY_ENTER:
+            ChessLogic::selectPiece("none");
             break;
         case 'r': // Tasto 'r' per resettare la scena
             resetScene();
+            break;
+        case 'z': // Tasto 'z' per annullare l'ultima mossa
+            ChessLogic::undoLastMove();
+            std::cout << "[Info] Mossa annullata." << std::endl;
             break;
         }
         });
@@ -213,13 +175,10 @@ int main() {
     // Crea una telecamera prospettica e la imposta come attiva
     camera = std::make_shared<PerspectiveCamera>();
     camera->setName("MainCamera");
-    camera->setPosition(glm::vec3(-10.0f, 60.0f, 0.0f)); // Posizione
+    camera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
     camera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f));  // Rotazione
     scene->addChild(camera);
     Engine::setActiveCamera(camera);
-
-    // Imposta il movimento della camera e della luce
-    //setupCameraAndLightMovement();
 
     // Carica una scena da file OVO e la imposta
     std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");
@@ -248,6 +207,3 @@ int main() {
 
     return 0;
 }
-
-
-
