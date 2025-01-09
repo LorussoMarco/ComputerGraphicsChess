@@ -9,7 +9,6 @@
 #include <algorithm> // Per std::find
 
 #include "ChessLogic.h"
-#include "main.h"
 
 namespace Constants {
     constexpr inline int MOUSE_LEFT_BUTTON = 0;
