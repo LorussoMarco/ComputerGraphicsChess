@@ -26,6 +26,7 @@ public:
     int getPriority() const;
     glm::mat4 getLocalMatrix() const;
     std::vector<std::shared_ptr<Node>> getChildren() const;
+    std::vector<std::shared_ptr<Node>>& getChildren();
 
     // Setter
     void setPosition(const glm::vec3 newPosition);
@@ -35,7 +36,7 @@ public:
     void setPriority(int p);
 
     void addChild(const std::shared_ptr<Node> newChild);
-
+    void removeAllChildren();
     // Renderizza un node
     void render(const glm::mat4 viewMatrix) const override;
 

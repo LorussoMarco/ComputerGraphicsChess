@@ -141,6 +141,12 @@ std::vector<std::shared_ptr<Node>> LIB_API Node::getChildren() const
     return this->children;
 }
 
+std::vector<std::shared_ptr<Node>>& Node::getChildren()
+{
+    return this->children; // Restituisce una referenza modificabile
+}
+
+
 /**
  * @brief Restituisce la priorita' del nodo.
  *
@@ -214,6 +220,12 @@ void LIB_API Node::setPriority(int p) {
 void LIB_API Node::addChild(const std::shared_ptr<Node> newChild)
 {
     this->children.push_back(newChild);
+}
+
+void LIB_API Node::removeAllChildren()
+{
+    this->children.clear();
+    std::cout << "All children nodes have been removed from: " << this->getName() << std::endl;
 }
 
 ///// funzione di render per un Node
