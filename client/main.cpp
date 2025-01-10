@@ -21,7 +21,12 @@ namespace Constants {
 }
 
 // Camera reference
-std::shared_ptr<PerspectiveCamera> camera;
+std::shared_ptr<PerspectiveCamera> whiteCamera;
+
+
+std::shared_ptr<PerspectiveCamera> freeCamera;
+
+std::shared_ptr<PerspectiveCamera> currentActiveCamera = whiteCamera;
 
 // Light reference
 std::shared_ptr<PointLight> lightAbove;
@@ -33,26 +38,27 @@ float lightSpeed = 5.0f;
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
 
+void intializeAndSetCameras(std::shared_ptr<Node> scene)
+{
 
-void addLightAboveScene() {
-    // Crea una luce di tipo puntuale
-    lightAbove = std::make_shared<PointLight>();
-    lightAbove->setName("LightAbove");
+    //white camera
 
-    // Posiziona la luce sopra la scena
-    glm::vec3 lightPosition = glm::vec3(0.0f, 100.0f, 0.0f); // Sopra la scena
-    lightAbove->setPosition(lightPosition);
+    whiteCamera = std::make_shared<PerspectiveCamera>();
+    whiteCamera->setName("WhiteCamera");
+    whiteCamera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
+    whiteCamera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f));  // Rotazione
+    scene->addChild(whiteCamera);
+    Engine::setActiveCamera(whiteCamera);
 
-    // Imposta il colore della luce
-    lightAbove->setDiffuseColor(glm::vec3(0.1f, 0.1f, 0.1f));  // Luce diffusa meno intensa
-    lightAbove->setAmbientColor(glm::vec3(0.1f, 0.1f, 0.1f));  // Luce ambientale leggera
-    lightAbove->setSpecularColor(glm::vec3(0.2f, 0.2f, 0.2f)); // Luce speculare moderata
+    //freecamera
 
-    // Imposta il raggio della luce (influenza)
-    lightAbove->setRadius(4.0f); // Raggio più ampio per diffondere la luce
+    freeCamera = std::make_shared<PerspectiveCamera>();
+    freeCamera->setName("BlackCamera");
+    freeCamera->setPosition(glm::vec3(55.0f, 200.0f, -55.0f)); // Posizione
+    freeCamera->setRotation(glm::vec3(-40.0f, 130.0f, 0.0f));  // Rotazione
+    scene->addChild(freeCamera);
+    Engine::setActiveCamera(freeCamera);
 
-    // Aggiungi la luce alla scena
-    Engine::getScene()->addChild(lightAbove);
 }
 
 void resetScene() {
@@ -63,14 +69,8 @@ void resetScene() {
     scene->removeAllChildren();
 
     // Riaggiungi la luce sopra la scena
-    addLightAboveScene();
     // Riaggiungi la camera prospettica
-    camera = std::make_shared<PerspectiveCamera>();
-    camera->setName("MainCamera");
-    camera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
-    camera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f)); // Rotazione
-    scene->addChild(camera);
-    Engine::setActiveCamera(camera);
+    intializeAndSetCameras(scene);
 
     // Ricarica la scena dal file OVO
     std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");
@@ -83,6 +83,22 @@ void resetScene() {
     }
 
     ChessLogic::resetLogic();
+}
+
+
+
+void nextCamera() {
+    // Passa alla prossima camera nell'ordine in loop
+    if (currentActiveCamera == whiteCamera) {
+        currentActiveCamera = freeCamera;
+        Engine::setActiveCamera(freeCamera);
+        std::cout << "[Info] Switched to Black Camera." << std::endl;
+    }
+    else {
+        currentActiveCamera = whiteCamera;
+        Engine::setActiveCamera(whiteCamera);
+        std::cout << "[Info] Switched to White Camera." << std::endl;
+    }
 }
 
 int main() {
@@ -161,6 +177,9 @@ int main() {
             ChessLogic::undoLastMove();
             std::cout << "[Info] Mossa annullata." << std::endl;
             break;
+        case 'c':
+            nextCamera();
+            break;
         }
         });
 
@@ -169,16 +188,10 @@ int main() {
     scene->setName("RootNode");
     Engine::setScene(scene);
 
-    // Aggiungi una luce sopra la scena
-    addLightAboveScene();
 
+    intializeAndSetCameras(scene);
     // Crea una telecamera prospettica e la imposta come attiva
-    camera = std::make_shared<PerspectiveCamera>();
-    camera->setName("MainCamera");
-    camera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
-    camera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f));  // Rotazione
-    scene->addChild(camera);
-    Engine::setActiveCamera(camera);
+    
 
     // Carica una scena da file OVO e la imposta
     std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");

@@ -97,7 +97,7 @@ void LIB_API SpotLight::render(const glm::mat4 viewMatrix) const
 
     // Calcola l'attenuazione costante della luce in base al raggio.
     // Se e _radius     piccolo, la luce si attenua pi    rapidamente con la distanza.
-    const float constantAttenuation = 1.0f / this->_radius;
+    const float constantAttenuation = 1.0f / (this->_radius/100);
 
     const int currentLight = Light::getCurrentLight(this->_lightId);
 

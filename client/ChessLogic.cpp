@@ -235,6 +235,7 @@ void ChessLogic::undoLastMove() {
 		_originalPosition = glm::vec3(0.0f);
 		_isPieceSelected = false;
 		_isMoveInProgress = false;
+		_isWhiteTurn = !_isWhiteTurn;
 	}
 	else {
 		std::cout << "[Error] Node not found for piece: " << fullName << std::endl;
