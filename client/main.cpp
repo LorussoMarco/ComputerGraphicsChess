@@ -38,6 +38,19 @@ float lightSpeed = 5.0f;
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
 
+
+void textOverlay() 
+{
+    std::stringstream text;
+    text << "[left moue click] Select piece\n";
+    text << "[directional arrows] - Move pieces\n";
+    text << "[enter] - Confirm move\n\n";
+    text << "[z] - Undo move\n";
+    text << "[r] - Reset game\n";
+    text << "[c] - Switch camera\n";
+    Engine::setScreenText(text.str());
+}
+
 void intializeAndSetCameras(std::shared_ptr<Node> scene)
 {
 
@@ -107,6 +120,7 @@ int main() {
 
     ChessLogic::initialPopulate();
     ChessLogic::init();
+    textOverlay();
     static std::list<std::string> stringList = { "Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001" };
 
     Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
