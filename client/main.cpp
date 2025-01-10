@@ -23,19 +23,18 @@ namespace Constants {
 // Camera reference
 std::shared_ptr<PerspectiveCamera> whiteCamera;
 
-
 std::shared_ptr<PerspectiveCamera> freeCamera;
 
 std::shared_ptr<PerspectiveCamera> currentActiveCamera = whiteCamera;
 
-bool isLightEnabled = true;
 
 // Movement speed
 float cameraSpeed = 5.0f;
 
+bool isLightEnabled = false;
+
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
-
 
 void textOverlay() 
 {
@@ -51,32 +50,22 @@ void textOverlay()
 
 void intializeAndSetCameras(std::shared_ptr<Node> scene)
 {
-
     //white camera
-
     whiteCamera = std::make_shared<PerspectiveCamera>();
     whiteCamera->setName("WhiteCamera");
-    whiteCamera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
-    whiteCamera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f));  // Rotazione
+    whiteCamera->setPosition(glm::vec3(-20.0f, 80.0f, 0.0f)); 
+    whiteCamera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f)); 
     scene->addChild(whiteCamera);
     Engine::setActiveCamera(whiteCamera);
 
-    //freecamera
-
+    //free camera
     freeCamera = std::make_shared<PerspectiveCamera>();
     freeCamera->setName("BlackCamera");
-    freeCamera->setPosition(glm::vec3(55.0f, 200.0f, -55.0f)); // Posizione
-    freeCamera->setRotation(glm::vec3(-40.0f, 130.0f, 0.0f));  // Rotazione
+    freeCamera->setPosition(glm::vec3(30.0f, 85.0f, -35.0f)); 
+    freeCamera->setRotation(glm::vec3(-40.0f, 160.0f, 0.0f));  
     scene->addChild(freeCamera);
     Engine::setActiveCamera(freeCamera);
 
-}
-
-void setShadows() 
-{
-    std::shared_ptr<Node> chessBoard = Engine::findObjectByName("ChessBoard.001");
-        std::shared_ptr<Mesh> mesh = std::dynamic_pointer_cast<Mesh>(chessBoard);
-        mesh->setShadows(true);
 }
 
 void resetScene() {
@@ -86,7 +75,6 @@ void resetScene() {
     // Rimuovi tutti i figli della scena (inclusi camera e luce)
     scene->removeAllChildren();
 
-    // Riaggiungi la luce sopra la scena
     // Riaggiungi la camera prospettica
     intializeAndSetCameras(scene);
 
@@ -111,6 +99,9 @@ void switchLight()
     if (spotlightNode) {
         // Effettua un cast dinamico a SpotLight
         std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight>(spotlightNode);
+        std::shared_ptr<Node> lightLamp = Engine::findObjectByName("lightLamp");
+        std::shared_ptr<Mesh> lampMesh = std::dynamic_pointer_cast<Mesh>(lightLamp);
+
 
         if (spotlight) {
             // Alterna lo stato della luce
@@ -119,11 +110,15 @@ void switchLight()
             if (isLightEnabled) {
                 spotlight->setRadius(0);
                 isLightEnabled = false;
+                lampMesh->getMaterial()->setAmbientColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+                lampMesh->getMaterial()->setDiffuseColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
                 std::cout << "[Info] Spotlight disattivata." << std::endl;
             }
             else {
                 spotlight->setRadius(200);
                 isLightEnabled = true;
+                lampMesh->getMaterial()->setAmbientColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+                lampMesh->getMaterial()->setDiffuseColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
                 std::cout << "[Info] Spotlight attivata." << std::endl;
             }
         }
@@ -158,7 +153,6 @@ int main() {
     ChessLogic::init();
     textOverlay();
     static std::list<std::string> stringList = { "Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001" };
-
     Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
         {
             if (button == Constants::MOUSE_LEFT_BUTTON && state == Constants::MOUSE_DOWN)
@@ -241,11 +235,9 @@ int main() {
     scene->setName("RootNode");
     Engine::setScene(scene);
 
-
     intializeAndSetCameras(scene);
     // Crea una telecamera prospettica e la imposta come attiva
     
-
     // Carica una scena da file OVO e la imposta
     std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");
     if (ovoScene) {
@@ -255,7 +247,10 @@ int main() {
         std::cerr << "[Error] Unable to load OVO file." << std::endl;
     }
 
-    setShadows();
+    std::shared_ptr<Node> spotlightNode = Engine::findObjectByName("Spot001");
+    std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight>(spotlightNode);
+    spotlight->setRadius(0);
+
     // Esegui il ciclo principale del motore finché non viene chiuso
     while (Engine::isRunning()) {
         Engine::update();       // Gestisce eventi e callback
