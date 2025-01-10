@@ -58,7 +58,8 @@ public:
     static bool removeObject(const std::shared_ptr<Node>& nodeToRemove, const std::shared_ptr<Node>& root);
     static bool removeObject(const std::shared_ptr<Node>& nodeToRemove);
     static void removeAllObjects();
-    static void initializeShadowMap(int width, int height);
+    static glm::mat4 getGlobalTransform(const std::shared_ptr<Node>& node);
+    static glm::vec3 getGlobalPosition(const std::shared_ptr<Node>& node);
 private:
 
     static void resizeCallback(const int width, const int height);

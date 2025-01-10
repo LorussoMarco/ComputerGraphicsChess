@@ -12,7 +12,7 @@
  * Questo file contiene la definizione della classe Node,
  * che rappresenta un nodo nella gerarchia di una scena 3D.
  */
-class LIB_API Node : public Object
+class LIB_API Node : public Object, public std::enable_shared_from_this<Node>
 {
 public:
 
@@ -25,6 +25,9 @@ public:
     glm::vec3 getScale() const;
     int getPriority() const;
     glm::mat4 getLocalMatrix() const;
+    glm::mat4 getTransform() const; // Alias di getLocalMatrix
+    glm::mat4 getWorldMatrix(const glm::mat4& parentMatrix = glm::mat4(1.0f)) const;
+    std::shared_ptr<Node> getParent() const;
     std::vector<std::shared_ptr<Node>> getChildren() const;
     std::vector<std::shared_ptr<Node>>& getChildren();
 
@@ -49,4 +52,7 @@ private:
     glm::vec3 _position;   ///< La posizione del nodo rispetto alla matrice di base.
     glm::vec3 _rotation;   ///< La rotazione del nodo rispetto alla matrice di base.
     glm::vec3 _scale;      ///< La scala del nodo rispetto alla matrice di base.
+
+    std::weak_ptr<Node> parent; // Nodo genitore (weak per evitare cicli di riferimento)
+
 };

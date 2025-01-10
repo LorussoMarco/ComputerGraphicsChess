@@ -47,6 +47,89 @@ void textOverlay()
     text << "[c] - Switch camera\n";
     Engine::setScreenText(text.str());
 }
+void setupCameraAndLightMovement() {
+    Engine::setKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY) {
+        // Ottieni la matrice globale della camera per calcolare la direzione
+        glm::mat4 globalTransform = Engine::getGlobalTransform(freeCamera);
+
+        // Estrai i vettori front, right e up dalla matrice globale
+        glm::vec3 cameraFront = glm::normalize(glm::vec3(globalTransform[2])); // Z
+        glm::vec3 cameraRight = glm::normalize(glm::vec3(globalTransform[0])); // X
+        glm::vec3 cameraUp = glm::normalize(glm::vec3(globalTransform[1]));    // Y
+
+        glm::vec3 cameraPosition = freeCamera->getPosition(); // Posizione corrente della camera
+
+        // Movimento basato su WASD
+        switch (key) {
+        case 'w': // Muove la camera in avanti
+            cameraPosition -= cameraFront * cameraSpeed;
+            break;
+        case 's': // Muove la camera indietro
+            cameraPosition += cameraFront * cameraSpeed;
+            break;
+        case 'a': // Muove la camera a sinistra
+            cameraPosition -= cameraRight * cameraSpeed;
+            break;
+        case 'd': // Muove la camera a destra
+            cameraPosition += cameraRight * cameraSpeed;
+            break;
+        case 'q': // Muove la camera verso il basso
+            cameraPosition -= cameraUp * cameraSpeed;
+            break;
+        case 'e': // Muove la camera verso l'alto
+            cameraPosition += cameraUp * cameraSpeed;
+            break;
+        case 27: // ESC per uscire
+            Engine::stop();
+            break;
+        }
+
+        // Aggiorna la posizione della camera
+        freeCamera->setPosition(cameraPosition);
+
+        std::cout << "Camera Position: ("
+            << cameraPosition.x << ", "
+            << cameraPosition.y << ", "
+            << cameraPosition.z << ")" << std::endl;
+        });
+
+    Engine::setMethodSpecialCallback([](int key, int mouseX, int mouseY) {
+        // Ottieni la rotazione corrente della camera
+        glm::vec3 rotation = freeCamera->getRotation();
+
+        // Rotazione basata sulle frecce
+        switch (key) {
+        case 'x': // Freccia su
+            rotation.x -= cameraRotationSpeed;
+            if (rotation.x < -89.0f) rotation.x = -89.0f; // Limita il pitch
+            break;
+        case 'y': // Freccia giù
+            rotation.x += cameraRotationSpeed;
+            if (rotation.x > 89.0f) rotation.x = 89.0f; // Limita il pitch
+            break;
+        case 'q': // Freccia sinistra
+            rotation.y -= cameraRotationSpeed;
+            break;
+        case 'e': // Freccia destra
+            rotation.y += cameraRotationSpeed;
+            break;
+        }
+
+        // Aggiorna la rotazione della camera
+        freeCamera->setRotation(rotation);
+
+        glm::vec3 cameraPosition = freeCamera->getPosition();
+        std::cout << "Camera Position: ("
+            << cameraPosition.x << ", "
+            << cameraPosition.y << ", "
+            << cameraPosition.z << ")" << std::endl;
+        std::cout << "Camera Rotation: ("
+            << rotation.x << ", "
+            << rotation.y << ", "
+            << rotation.z << ")" << std::endl;
+        });
+}
+
 
 void intializeAndSetCameras(std::shared_ptr<Node> scene)
 {
@@ -238,6 +321,8 @@ int main() {
     intializeAndSetCameras(scene);
     // Crea una telecamera prospettica e la imposta come attiva
     
+    setupCameraAndLightMovement();
+
     // Carica una scena da file OVO e la imposta
     std::shared_ptr<Node> ovoScene = OVOParser::fromFile("./scena1.ovo");
     if (ovoScene) {

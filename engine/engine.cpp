@@ -712,3 +712,28 @@ void LIB_API Engine::removeAllObjects() {
 
 
 
+/**
+ * @brief Restituisce la matrice di trasformazione globale di un nodo.
+ *
+ * Calcola ricorsivamente la trasformazione globale combinata di un nodo
+ * sommando le trasformazioni di tutti i suoi genitori nella gerarchia della scena.
+ *
+ * @param node Il nodo di cui calcolare la matrice globale.
+ * @return La matrice di trasformazione globale.
+ */
+glm::mat4 Engine::getGlobalTransform(const std::shared_ptr<Node>& node) {
+    if (!node) {
+        std::cerr << "Error: Node is null. Cannot compute global transform." << std::endl;
+        return glm::mat4(1.0f);
+    }
+    if (!node->getParent()) {
+        return node->getTransform();
+    }
+    return getGlobalTransform(node->getParent()) * node->getTransform();
+}
+
+glm::vec3 Engine::getGlobalPosition(const std::shared_ptr<Node>& node) {
+    glm::mat4 globalTransform = getGlobalTransform(node);
+    return glm::vec3(globalTransform[3][0], globalTransform[3][1], globalTransform[3][2]);
+}
+
