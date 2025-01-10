@@ -58,6 +58,7 @@ public:
     static bool removeObject(const std::shared_ptr<Node>& nodeToRemove, const std::shared_ptr<Node>& root);
     static bool removeObject(const std::shared_ptr<Node>& nodeToRemove);
     static void removeAllObjects();
+    static void initializeShadowMap(int width, int height);
 private:
 
     static void resizeCallback(const int width, const int height);

@@ -28,12 +28,10 @@ std::shared_ptr<PerspectiveCamera> freeCamera;
 
 std::shared_ptr<PerspectiveCamera> currentActiveCamera = whiteCamera;
 
-// Light reference
-std::shared_ptr<PointLight> lightAbove;
+bool isLightEnabled = true;
 
 // Movement speed
 float cameraSpeed = 5.0f;
-float lightSpeed = 5.0f;
 
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
@@ -42,7 +40,7 @@ float cameraRotationSpeed = 5.0f;
 void textOverlay() 
 {
     std::stringstream text;
-    text << "[left moue click] Select piece\n";
+    text << "[left mouse click] Select piece\n";
     text << "[directional arrows] - Move pieces\n";
     text << "[enter] - Confirm move\n\n";
     text << "[z] - Undo move\n";
@@ -74,6 +72,13 @@ void intializeAndSetCameras(std::shared_ptr<Node> scene)
 
 }
 
+void setShadows() 
+{
+    std::shared_ptr<Node> chessBoard = Engine::findObjectByName("ChessBoard.001");
+        std::shared_ptr<Mesh> mesh = std::dynamic_pointer_cast<Mesh>(chessBoard);
+        mesh->setShadows(true);
+}
+
 void resetScene() {
     // Ottieni la scena corrente
     std::shared_ptr<Node> scene = Engine::getScene();
@@ -98,7 +103,38 @@ void resetScene() {
     ChessLogic::resetLogic();
 }
 
+void switchLight()
+{
+    // Trova la spotlight nella scena usando il nome "Spot001"
+    std::shared_ptr<Node> spotlightNode = Engine::findObjectByName("Spot001");
 
+    if (spotlightNode) {
+        // Effettua un cast dinamico a SpotLight
+        std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight>(spotlightNode);
+
+        if (spotlight) {
+            // Alterna lo stato della luce
+             // Supponendo che la classe SpotLight abbia un metodo isEnabled
+
+            if (isLightEnabled) {
+                spotlight->setRadius(0);
+                isLightEnabled = false;
+                std::cout << "[Info] Spotlight disattivata." << std::endl;
+            }
+            else {
+                spotlight->setRadius(200);
+                isLightEnabled = true;
+                std::cout << "[Info] Spotlight attivata." << std::endl;
+            }
+        }
+        else {
+            std::cerr << "[Error] Oggetto trovato non è una spotlight." << std::endl;
+        }
+    }
+    else {
+        std::cerr << "[Error] Spotlight 'Spot001' non trovata nella scena." << std::endl;
+    }
+}
 
 void nextCamera() {
     // Passa alla prossima camera nell'ordine in loop
@@ -194,6 +230,9 @@ int main() {
         case 'c':
             nextCamera();
             break;
+        case 'l':
+            switchLight();
+            break;
         }
         });
 
@@ -216,6 +255,7 @@ int main() {
         std::cerr << "[Error] Unable to load OVO file." << std::endl;
     }
 
+    setShadows();
     // Esegui il ciclo principale del motore finché non viene chiuso
     while (Engine::isRunning()) {
         Engine::update();       // Gestisce eventi e callback
