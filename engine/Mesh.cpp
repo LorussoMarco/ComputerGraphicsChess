@@ -38,6 +38,11 @@ std::shared_ptr<Material> LIB_API Mesh::getMaterial() const
     return this->_material;
 }
 
+const MeshData& LIB_API Mesh::getMeshData() const {
+    return _meshData;
+}
+
+
 // Setter
 
 void LIB_API Mesh::setMaterial(const std::shared_ptr<Material> newMaterial)

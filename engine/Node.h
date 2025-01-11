@@ -17,6 +17,7 @@ public:
     Node();
     Node(std::string type);
 
+
     // Getter
     glm::vec3 getPosition() const;
     glm::vec3 getRotation() const;

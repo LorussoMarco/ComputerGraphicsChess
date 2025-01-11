@@ -27,6 +27,13 @@ public:
      */
     Object(const std::string type);
 
+    /**
+     * @brief Distruttore della classe `Object`.
+     *
+     * Rimuove la luce decrementando il contatore globale degli ID degli oggetti.
+     */
+    virtual ~Object();
+
     // Getter
 
     /**

@@ -48,6 +48,7 @@ Node::Node(std::string type)
     this->setPriority(0);
 }
 
+
 ///// Getter
 
 /**

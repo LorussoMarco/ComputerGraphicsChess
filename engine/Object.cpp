@@ -21,6 +21,15 @@ Object::Object(const std::string type)
     this->_name = stream.str();
 }
 
+/**
+ * @brief Distruttore della classe `Light`.
+ */
+Object::~Object()
+{
+    nextId--;
+}
+
+
 ///// Getter
 
 /**
