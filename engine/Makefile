@@ -25,7 +25,7 @@ install: $(TARGET)
 
 # Target for building the shared library
 # check if the test runner and object files are update
-$(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
+$(TARGET): $(MAIN_OBJ_FILES)
 	# builds the shared library
 	$(CXX) $(LD_FLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LIBS)
 	@echo "$(TARGET) build done!"

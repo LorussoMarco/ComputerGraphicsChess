@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include <Engine.h>
+#include <engine.h>
 #include <Node.h>
 #include <PerspectiveCamera.h>
 #include <OvoParser.h>
@@ -162,7 +162,6 @@ int main() {
     ChessLogic::initialPopulate();
     ChessLogic::init();
     textOverlay();
-    static std::list<std::string> stringList = { "Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001" };
     Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
         {
             if (button == Constants::MOUSE_LEFT_BUTTON && state == Constants::MOUSE_DOWN)
@@ -173,18 +172,9 @@ int main() {
                 if (selectedNode != nullptr)
                 {
                     std::string pieceName = selectedNode->getName();
-
-                    // Controlla se il nome è nella lista globale
-                    if (std::find(stringList.begin(), stringList.end(), pieceName) != stringList.end())
+                    if (ChessLogic::isPieceSelected() == false)
                     {
-                        std::cout << "Il pezzo \"" << pieceName << "\" non può essere selezionato poiché è nella lista." << std::endl;
-                    }
-                    else
-                    {
-                        if (ChessLogic::isPieceSelected() == false)
-                        {
-                            ChessLogic::selectPiece(pieceName);
-                        }
+                        ChessLogic::selectPiece(pieceName);
                     }
                 }
                 else

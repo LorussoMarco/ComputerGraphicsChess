@@ -1,19 +1,14 @@
-# output: rush-hour.tar.gz
+# output: chessGame.tar.gz
 
-BASE_NAME := rush-hour
+BASE_NAME := chessGame
 TARGET_DIR := .
-# Name of main executable -> rush-hour
+# Name of main executable -> chessGame
 TARGET := $(BASE_NAME)
-# Name of archive file -> rush-hour.tar.gz
+# Name of archive file -> chessGame.tar.gz
 TARGET_ARCHIVE := $(BASE_NAME).tar.gz
 MAIN_SRC_FILES := $(wildcard *.cpp)
 # List of .o object files corresponding to source files
 MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
-# Name of the executable for the test -> rush-hour-tests-runner
-TESTS_RUNNER := $(BASE_NAME)-tests-runner
-TEST_SRC_FILES := $(wildcard *_test.cpp)
-# List of .o object files for test files
-TEST_OBJ_FILES := $(patsubst %.cpp,%.o,$(TEST_SRC_FILES))
 # variables to manage the external shared library (engine)
 ENGINE_BASE_NAME := engine
 ENGINE_DIR := $(ENGINE_BASE_NAME)
@@ -30,7 +25,8 @@ LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME)
 TAR_GZ := tar zcvf
 
 # OS uses LD_LIBRARY_PATH to determine where to look for shared libraries required by the program
-export LD_LIBRARY_PATH := ../$(ENGINE_DIR):$(LD_LIBRARY_PATH)
+# export LD_LIBRARY_PATH := ../$(ENGINE_DIR):$(LD_LIBRARY_PATH)
+export LD_LIBRARY_PATH=../engine:$LD_LIBRARY_PATH
 
 # package: Creates a tar.gz archive of the main executable
 # default target (first)
@@ -44,18 +40,10 @@ $(TARGET_ARCHIVE): $(TARGET)
 	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET)
 	@echo "$(TARGET) package done!"
 
-$(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
+$(TARGET): $(MAIN_OBJ_FILES)
 	# build your client here
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
 	@echo "$(TARGET) compile done!"
-
-#To do
-$(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
-	# build your test runner executable here
-	$(CXX) $(CXX_FLAGS) -o $(TESTS_RUNNER) $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES) $(LDFLAGS)
-	@echo "$(TESTS_RUNNER) build done!"
-	#./$(TESTS_RUNNER)
-	@echo "tests execution done!"
 
 # Compile .cpp source files into .o object files
 %.o: %.cpp
@@ -64,8 +52,6 @@ $(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
 
 # Used to remove files generated during the building process
 clean:
-	@rm -f $(TESTS_RUNNER)
-	@rm -f $(TEST_OBJ_FILES)
 	@rm -f $(TARGET)
 	@rm -f $(MAIN_OBJ_FILES)
 
