@@ -91,6 +91,11 @@ void LIB_API Texture::render(const glm::mat4 viewMatrix) const
     glEnable(GL_TEXTURE_2D);
 }
 
+/**
+ * @brief Verifica se la texture è stata caricata correttamente.
+ *
+ * @return `true` se la texture è stata caricata con successo, `false` altrimenti.
+ */
 bool Texture::isLoaded() const {
     return (_textureId != 0 && _bitmap != nullptr);
 }

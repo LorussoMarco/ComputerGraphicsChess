@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ChessBoard.h"
 #include "Direction.h"
 #include "Piece.h"
 
@@ -22,6 +21,7 @@ public:
     static bool isPieceSelected();
     static void printPieces();
     static void undoLastMove();
+    static void redoLastMove();
 
     /**
      * @brief Resetta lo stato logico del gioco di scacchi.
@@ -40,7 +40,6 @@ public:
 
 private:
     static void updateGraphics(Direction direction);
-    static ChessBoard _chessBoard; // Board per giocare
     static Piece _selectedPiece;   // Pezzo selezionato
     static std::vector<Piece> _pieces; // Stato dei pezzi
     static bool _isPieceSelected;

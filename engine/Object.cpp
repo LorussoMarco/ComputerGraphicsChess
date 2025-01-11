@@ -2,16 +2,15 @@
 
 #include <sstream>
 
-
 int Object::nextId = 0;
 
 /**
-  * @brief Costruttore della classe Object.
-  * @param type Il tipo dell'oggetto.
-  *
-  * Il costruttore assegna automaticamente un ID univoco all'oggetto e imposta
-  * il nome dell'oggetto nel formato "[<id>]".
-  */
+ * @brief Costruttore della classe Object.
+ * @param type Il tipo dell'oggetto.
+ *
+ * Il costruttore assegna automaticamente un ID univoco all'oggetto e imposta
+ * il nome dell'oggetto nel formato "[<id>]".
+ */
 Object::Object(const std::string type)
     : _type(type)
 {

@@ -89,7 +89,6 @@
     <ClCompile Include="Camera.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="engine.cpp" />
-    <ClCompile Include="engine_test.cpp" />
     <ClCompile Include="Light.cpp" />
     <ClCompile Include="List.cpp" />
     <ClCompile Include="Material.cpp" />

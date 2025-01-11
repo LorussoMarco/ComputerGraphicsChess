@@ -3,8 +3,7 @@
 // Getter
 
 /**
- * Restituisce la lista dei vertici per questa mesh.
- *
+ * @brief Restituisce la lista dei vertici per questa mesh.
  * @return Un riferimento costante al vettore dei vertici.
  */
 LIB_API const std::vector<glm::vec3>& MeshData::getVertices() const {
@@ -12,10 +11,9 @@ LIB_API const std::vector<glm::vec3>& MeshData::getVertices() const {
 }
 
 /**
- * Restituisce la lista delle facce per questa mesh.
+ * @brief Restituisce la lista delle facce per questa mesh.
  *
- * Le facce sono rappresentate come tuple di indici, ciascuna tuple contiene tre indici che formano un triangolo.
- *
+ * Le facce sono rappresentate come tuple di indici, ciascuna contenente tre indici che formano un triangolo.
  * @return Un riferimento costante al vettore delle facce.
  */
 LIB_API const std::vector<std::tuple<uint32_t, uint32_t, uint32_t>>& MeshData::getFaces() const {
@@ -23,8 +21,7 @@ LIB_API const std::vector<std::tuple<uint32_t, uint32_t, uint32_t>>& MeshData::g
 }
 
 /**
- * Restituisce la lista delle normali per questa mesh.
- *
+ * @brief Restituisce la lista delle normali per questa mesh.
  * @return Un riferimento costante al vettore delle normali.
  */
 LIB_API const std::vector<glm::vec3>& MeshData::getNormals() const {
@@ -32,18 +29,17 @@ LIB_API const std::vector<glm::vec3>& MeshData::getNormals() const {
 }
 
 /**
- * Restituisce la lista delle coordinate UV per questa mesh.
- *
+ * @brief Restituisce la lista delle coordinate UV per questa mesh.
  * @return Un riferimento costante al vettore delle coordinate UV.
  */
 LIB_API const std::vector<glm::vec2>& MeshData::getUVs() const {
     return _uvs;
 }
 
-///// Setter
+// Setter
 
 /**
- * Imposta i dati della mesh, inclusi vertici, facce, normali e coordinate UV.
+ * @brief Imposta i dati della mesh, inclusi vertici, facce, normali e coordinate UV.
  *
  * @param newVertices I nuovi vertici per la mesh.
  * @param newFaces Le nuove facce per la mesh, rappresentate come tuple di indici dei vertici.
@@ -62,4 +58,3 @@ void LIB_API MeshData::set_mesh_data(
     _normals = newNormals;
     _uvs = newUvs;
 }
-

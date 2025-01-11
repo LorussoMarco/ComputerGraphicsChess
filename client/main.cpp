@@ -157,7 +157,7 @@ void nextCamera() {
 
 int main() {
     // Inizializza il motore con titolo finestra, larghezza e altezza
-    Engine::init("Test Scene", 800, 600);
+    Engine::init("Test Scene", 1000, 800);
 
     ChessLogic::initialPopulate();
     ChessLogic::init();
@@ -231,6 +231,10 @@ int main() {
             ChessLogic::undoLastMove();
             std::cout << "[Info] Mossa annullata." << std::endl;
             break;
+        case 'v': // Tasto 'v' per rifare l'ultima mossa
+            ChessLogic::redoLastMove();
+            std::cout << "[Info] Mossa annullata." << std::endl;
+            break;
         case 'c':
             nextCamera();
             break;
@@ -302,12 +306,13 @@ int main() {
         Engine::update();       // Gestisce eventi e callback
         Engine::clearScreen();  // Pulisce lo schermo per il nuovo frame
         Engine::render();    // Renderizza la scena
+        
+        Engine::swapBuffers();  // Scambia i buffer per visualizzare il frame
         if (ChessLogic::getWinner() != "None")
         {
             std::cout << "Partita terminata! Vince il giocatore " << ChessLogic::getWinner() << "." << std::endl;
             resetScene();             // Reset della scena grafica
         }
-        Engine::swapBuffers();  // Scambia i buffer per visualizzare il frame
     }
 
     // Chiudi il motore e libera le risorse

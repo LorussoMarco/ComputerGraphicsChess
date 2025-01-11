@@ -1,13 +1,14 @@
 #include "ChessLogic.h"
 #include <iomanip>
 
-ChessBoard ChessLogic::_chessBoard;
 std::vector<Piece> ChessLogic::_pieces;
 Piece ChessLogic::_selectedPiece;
 bool ChessLogic::_isPieceSelected = false;
 bool ChessLogic::_isWhiteTurn = true;
 bool ChessLogic::_isMoveInProgress = false;
 std::string ChessLogic::_winner = "None";
+bool isRedoPossible = false;
+static glm::vec3 _redoPosition;
 
 static Piece _lastSelectedPiece;
 static glm::vec3 _originalPosition;
@@ -15,6 +16,9 @@ std::shared_ptr<Node> eliminatedPieceNode = nullptr;
 Piece eliminatedPiece = Piece();
 static int oldRow;
 static int oldCol;
+
+static int _redoRow;
+static int _redoCol;
 
 std::string ChessLogic::getWinner()
 {
@@ -48,7 +52,6 @@ bool ChessLogic::isPieceSelected()
 
 ChessLogic::ChessLogic()
 {
-	this->_chessBoard = ChessBoard();
 	this->_pieces = {};
 }
 
@@ -208,6 +211,32 @@ void ChessLogic::selectPiece(const std::string& pieceName)
 	std::cout << "Selected piece: " << pieceName << std::endl;
 }
 
+void ChessLogic::redoLastMove()
+{
+	if (isRedoPossible) 
+	{
+		std::string fullName = (_lastSelectedPiece.getColor() ? "White" : "Black") +
+			_lastSelectedPiece.getName() + "." + std::to_string(_lastSelectedPiece.getId());
+
+		auto node = std::dynamic_pointer_cast<Node>(Engine::findObjectByName(fullName));
+		if (node) 
+		{
+			node->setPosition(_redoPosition);
+			for (auto& piece : _pieces) {
+				if (piece.getId() == _lastSelectedPiece.getId() && piece.getName() == _lastSelectedPiece.getName() && piece.getColor() == _lastSelectedPiece.getColor())
+				{
+					piece.setRow(_redoRow);
+					piece.setCol(_redoCol);
+					_selectedPiece = piece;
+					checkAndHandleCollisions();
+				}
+			}
+		}
+
+
+	}
+}
+
 
 void ChessLogic::undoLastMove() {
 	if (_lastSelectedPiece.isNull()) {
@@ -228,21 +257,24 @@ void ChessLogic::undoLastMove() {
 	auto node = std::dynamic_pointer_cast<Node>(Engine::findObjectByName(fullName));
 	if (node) {
 		// Ripristina la posizione originale
+		_redoPosition = node->getPosition();
+		 
 		node->setPosition(_originalPosition);
 		std::cout << "[Debug] Position restored for piece " << fullName << ": " << glm::to_string(_originalPosition) << std::endl;
 
 		// Aggiorna lo stato logico del pezzo
 		for (auto& piece : _pieces) {
 			if (piece.getId() == _lastSelectedPiece.getId() && piece.getName() == _lastSelectedPiece.getName() && piece.getColor() == _lastSelectedPiece.getColor()) {
+				_redoRow = piece.getRow();
+				_redoCol = piece.getCol();
+
 				piece.setRow(oldRow);
 				piece.setCol(oldCol);
 				break;
 			}
 		}
-
-		// Reset del pezzo selezionato
-		_lastSelectedPiece = Piece();
-		_originalPosition = glm::vec3(0.0f);
+		isRedoPossible = true;
+		
 		_isPieceSelected = false;
 		_isMoveInProgress = false;
 		_isWhiteTurn = !_isWhiteTurn;
@@ -499,8 +531,6 @@ void ChessLogic::printPieces()
  */
 void ChessLogic::resetLogic()
 {
-	// Resetta la scacchiera
-	_chessBoard = ChessBoard();
 
 	// Cancella i pezzi esistenti
 	_pieces.clear();
