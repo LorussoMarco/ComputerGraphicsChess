@@ -1,14 +1,19 @@
 # output: rush-hour.tar.gz
 
-BASE_NAME := chessGame
+BASE_NAME := rush-hour
 TARGET_DIR := .
-# Name of main executable -> chessGame
+# Name of main executable -> rush-hour
 TARGET := $(BASE_NAME)
-# Name of archive file -> chessGame.tar.gz
+# Name of archive file -> rush-hour.tar.gz
 TARGET_ARCHIVE := $(BASE_NAME).tar.gz
 MAIN_SRC_FILES := $(wildcard *.cpp)
 # List of .o object files corresponding to source files
 MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+# Name of the executable for the test -> rush-hour-tests-runner
+TESTS_RUNNER := $(BASE_NAME)-tests-runner
+TEST_SRC_FILES := $(wildcard *_test.cpp)
+# List of .o object files for test files
+TEST_OBJ_FILES := $(patsubst %.cpp,%.o,$(TEST_SRC_FILES))
 # variables to manage the external shared library (engine)
 ENGINE_BASE_NAME := engine
 ENGINE_DIR := $(ENGINE_BASE_NAME)
@@ -32,17 +37,21 @@ export LD_LIBRARY_PATH := ../$(ENGINE_DIR):$(LD_LIBRARY_PATH)
 package: $(TARGET_ARCHIVE)
 	@echo "all done!"
 
-# If $(TARGET) is updated, it creates a tar.gz archive containing the main executable
+# If $(TARGET) is update, it creates a tar.gz archive containing the main executable
 $(TARGET_ARCHIVE): $(TARGET)
+	# package your distribution tar gz archive here with the necessary distribution artifacts
+	# For example, include binary, header files, dependencies, etc.
 	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET)
 	@echo "$(TARGET) package done!"
 
 $(TARGET): $(MAIN_OBJ_FILES)
-	$(CXX) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
+	# build your client here
+	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
 	@echo "$(TARGET) compile done!"
 
 # Compile .cpp source files into .o object files
 %.o: %.cpp
+	# eg: compile example.cpp and create example.o.
 	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
 # Used to remove files generated during the building process
@@ -53,3 +62,4 @@ clean:
 # Declaration that clean and install are not files
 # Always execute commands associated with that target, regardless of whether a file with the same name exists
 .PHONY: clean package
+
