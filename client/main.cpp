@@ -231,6 +231,10 @@ int main() {
             ChessLogic::undoLastMove();
             std::cout << "[Info] Mossa annullata." << std::endl;
             break;
+        case 'v': // Tasto 'v' per rifare l'ultima mossa
+            ChessLogic::redoLastMove();
+            std::cout << "[Info] Mossa annullata." << std::endl;
+            break;
         case 'c':
             nextCamera();
             break;

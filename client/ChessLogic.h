@@ -22,6 +22,7 @@ public:
     static bool isPieceSelected();
     static void printPieces();
     static void undoLastMove();
+    static void redoLastMove();
 
     /**
      * @brief Resetta lo stato logico del gioco di scacchi.
