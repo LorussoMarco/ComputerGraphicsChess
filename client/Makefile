@@ -1,19 +1,14 @@
-# output: rush-hour.tar.gz
+# output: chessGame.tar.gz
 
-BASE_NAME := rush-hour
+BASE_NAME := chessGame
 TARGET_DIR := .
-# Name of main executable -> rush-hour
+# Name of main executable -> chessGame
 TARGET := $(BASE_NAME)
-# Name of archive file -> rush-hour.tar.gz
+# Name of archive file -> chessGame.tar.gz
 TARGET_ARCHIVE := $(BASE_NAME).tar.gz
 MAIN_SRC_FILES := $(wildcard *.cpp)
 # List of .o object files corresponding to source files
 MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
-# Name of the executable for the test -> rush-hour-tests-runner
-TESTS_RUNNER := $(BASE_NAME)-tests-runner
-TEST_SRC_FILES := $(wildcard *_test.cpp)
-# List of .o object files for test files
-TEST_OBJ_FILES := $(patsubst %.cpp,%.o,$(TEST_SRC_FILES))
 # variables to manage the external shared library (engine)
 ENGINE_BASE_NAME := engine
 ENGINE_DIR := $(ENGINE_BASE_NAME)
