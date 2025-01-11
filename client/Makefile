@@ -57,4 +57,3 @@ clean:
 # Declaration that clean and install are not files
 # Always execute commands associated with that target, regardless of whether a file with the same name exists
 .PHONY: clean package
-
