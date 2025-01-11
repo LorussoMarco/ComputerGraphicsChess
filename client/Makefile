@@ -44,18 +44,10 @@ $(TARGET_ARCHIVE): $(TARGET)
 	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET)
 	@echo "$(TARGET) package done!"
 
-$(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
+$(TARGET): $(MAIN_OBJ_FILES)
 	# build your client here
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
 	@echo "$(TARGET) compile done!"
-
-#To do
-$(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
-	# build your test runner executable here
-	$(CXX) $(CXX_FLAGS) -o $(TESTS_RUNNER) $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES) $(LDFLAGS)
-	@echo "$(TESTS_RUNNER) build done!"
-	#./$(TESTS_RUNNER)
-	@echo "tests execution done!"
 
 # Compile .cpp source files into .o object files
 %.o: %.cpp
@@ -64,8 +56,6 @@ $(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
 
 # Used to remove files generated during the building process
 clean:
-	@rm -f $(TESTS_RUNNER)
-	@rm -f $(TEST_OBJ_FILES)
 	@rm -f $(TARGET)
 	@rm -f $(MAIN_OBJ_FILES)
 
