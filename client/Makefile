@@ -46,7 +46,7 @@ $(TARGET_ARCHIVE): $(TARGET)
 
 $(TARGET): $(MAIN_OBJ_FILES)
 	# build your client here
-	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
+	$(CXX) -o $(TARGET) $(MAIN_OBJ_FILES)
 	@echo "$(TARGET) compile done!"
 
 # Compile .cpp source files into .o object files
