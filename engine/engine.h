@@ -187,6 +187,9 @@ public:
      * @brief Rimuove tutti gli oggetti dalla scena.
      */
     static void removeAllObjects();
+    static glm::mat4 getGlobalTransform(const std::shared_ptr<Node>& node);
+    static glm::vec3 getGlobalPosition(const std::shared_ptr<Node>& node);
+
 private:
 
     /**
