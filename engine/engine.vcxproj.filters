@@ -48,39 +48,6 @@
     <ClCompile Include="Camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CameraTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="EngineTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="LightTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="ListTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="MaterialTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshDataTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="MeshTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="NodeTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="ObjectTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="TextureTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
-    <ClCompile Include="RunTest.cpp">
-      <Filter>tests</Filter>
-    </ClCompile>
     <ClCompile Include="OvoParser.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -94,6 +61,15 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="PerspectiveCamera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="engine_test.cpp">
+      <Filter>tests</Filter>
+    </ClCompile>
+    <ClCompile Include="Shadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Vertex.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -144,6 +120,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PerspectiveCamera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Shadow.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

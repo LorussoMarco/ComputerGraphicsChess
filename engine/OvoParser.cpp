@@ -2,6 +2,7 @@
 
 #include <stack>
 #include <glm/ext.hpp>
+#include "shadow.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 #pragma warning(disable:4996) // Disable Visual Studio warning
@@ -450,6 +451,17 @@ std::pair<std::shared_ptr<Mesh>, uint32_t> LIB_API OVOParser::parseMeshChunk(con
         break;
     }
     mesh->setMeshData(meshData);
+
+    if (mesh->getName().find("Pawn") != std::string::npos ||
+        mesh->getName().find("King") != std::string::npos ||
+        mesh->getName().find("Queen") != std::string::npos ||
+        mesh->getName().find("Rook") != std::string::npos ||
+        mesh->getName().find("Bishop") != std::string::npos)
+    {
+        std::cout << "Adding shadow for chess piece: " << mesh->getName() << std::endl;
+        auto shadow = std::make_shared<Shadow>(mesh.get()); // Passa il puntatore raw della mesh
+        mesh->addChild(shadow);
+    }
 
     return std::make_pair(mesh, numberOfChildren);
 }

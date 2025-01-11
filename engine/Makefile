@@ -31,11 +31,16 @@ install: $(TARGET)
 
 # Target for building the shared library
 # check if the test runner and object files are update
+<<<<<<< HEAD
 $(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
+=======
+$(TARGET): $(MAIN_OBJ_FILES)
+>>>>>>> dev
 	# builds the shared library
 	$(CXX) $(LD_FLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LIBS)
 	@echo "$(TARGET) build done!"
 
+<<<<<<< HEAD
 # Target for building the test runner
 $(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
 	# builds the test executable
@@ -44,6 +49,8 @@ $(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
 	./$(TESTS_RUNNER)  # Execute tests
 	@echo "tests execution done!"
 
+=======
+>>>>>>> dev
 # Generic rule to compile source file (.c++) into object file (.o)
 %.o: %.cpp
 	$(CXX) $(CXX_FLAGS) -o $@ $<
@@ -51,8 +58,11 @@ $(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
 # Target to clean generated files (.o, executables)
 # Removes test runner, object files and shared library
 clean:
+<<<<<<< HEAD
 	@rm -f $(TESTS_RUNNER)
 	@rm -f $(TEST_OBJ_FILES)
+=======
+>>>>>>> dev
 	@rm -f $(TARGET)
 	@rm -f $(MAIN_OBJ_FILES)
 

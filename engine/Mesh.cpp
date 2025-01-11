@@ -33,6 +33,19 @@ bool LIB_API Mesh::getShadows() const
     return this->_castShadows;
 }
 
+void Mesh::initializeShadow()
+{
+    if (_castShadows)
+    {
+        _shadow = std::make_shared<Shadow>(this); // Passa `this` alla classe Shadow
+    }
+    else
+    {
+        _shadow.reset(); // Rimuovi l'ombra se non deve essere renderizzata
+    }
+}
+
+
 /**
  * Restituisce il materiale utilizzato da questa mesh.
  *
@@ -41,6 +54,10 @@ bool LIB_API Mesh::getShadows() const
 std::shared_ptr<Material> LIB_API Mesh::getMaterial() const
 {
     return this->_material;
+}
+
+const MeshData& LIB_API Mesh::getMeshData() const {
+    return _meshData;
 }
 
 ///// Setter
@@ -63,6 +80,7 @@ void LIB_API Mesh::setMaterial(const std::shared_ptr<Material> newMaterial)
 void LIB_API Mesh::setShadows(const bool newShadows)
 {
     this->_castShadows = newShadows;
+    initializeShadow();
 }
 
 /**
@@ -166,4 +184,9 @@ void LIB_API Mesh::render(const glm::mat4 viewMatrix) const
             glEnd();
         }
     }
+    glm::mat4 shadowMatrix = viewMatrix;
+    shadowMatrix[1][1] *= 0.1f; // Schiaccia l'asse Y
+
+    // Renderizza l'ombra
+    _shadow->render(shadowMatrix, nullptr);
 }

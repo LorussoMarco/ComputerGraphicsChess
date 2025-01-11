@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # output: rush-hour.tar.gz
+=======
+# output: chessGame.tar.gz
+>>>>>>> dev
 
 BASE_NAME := chessGame
 TARGET_DIR := .
@@ -9,11 +13,14 @@ TARGET_ARCHIVE := $(BASE_NAME).tar.gz
 MAIN_SRC_FILES := $(wildcard *.cpp)
 # List of .o object files corresponding to source files
 MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+<<<<<<< HEAD
 # Name of the executable for the test -> rush-hour-tests-runner
 TESTS_RUNNER := $(BASE_NAME)-tests-runner
 TEST_SRC_FILES := $(wildcard *_test.cpp)
 # List of .o object files for test files
 TEST_OBJ_FILES := $(patsubst %.cpp,%.o,$(TEST_SRC_FILES))
+=======
+>>>>>>> dev
 # variables to manage the external shared library (engine)
 ENGINE_BASE_NAME := engine
 ENGINE_DIR := $(ENGINE_BASE_NAME)
@@ -25,7 +32,11 @@ CXX := g++
 CXX_FLAGS := -std=c++20 -O2
 # Adds the directory ../$(ENGINE_DIR) to the list of directories from which the compiler should search for included header files
 CXX_FLAGS += -I../$(ENGINE_DIR)
+<<<<<<< HEAD
 LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME)
+=======
+LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lglut -lGL -lGLU -lfreeimage
+>>>>>>> dev
 # Command to create a tar.gz archive
 TAR_GZ := tar zcvf
 
@@ -44,11 +55,16 @@ $(TARGET_ARCHIVE): $(TARGET)
 	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET)
 	@echo "$(TARGET) package done!"
 
+<<<<<<< HEAD
 $(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
+=======
+$(TARGET): $(MAIN_OBJ_FILES)
+>>>>>>> dev
 	# build your client here
 	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
 	@echo "$(TARGET) compile done!"
 
+<<<<<<< HEAD
 #To do
 $(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
 	# build your test runner executable here
@@ -73,3 +89,19 @@ clean:
 # Always execute commands associated with that target, regardless of whether a file with the same name exists
 .PHONY: clean package
 
+=======
+# Compile .cpp source files into .o object files
+%.o: %.cpp
+	# eg: compile example.cpp and create example.o.
+	$(CXX) $(CXX_FLAGS) -c $< -o $@
+
+# Used to remove files generated during the building process
+clean:
+	@rm -f $(TARGET)
+	@rm -f $(MAIN_OBJ_FILES)
+
+# Declaration that clean and install are not files
+# Always execute commands associated with that target, regardless of whether a file with the same name exists
+.PHONY: clean package
+
+>>>>>>> dev

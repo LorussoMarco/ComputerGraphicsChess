@@ -87,37 +87,30 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Camera.cpp" />
-    <ClCompile Include="CameraTest.cpp" />
     <ClCompile Include="DirectionalLight.cpp" />
     <ClCompile Include="engine.cpp" />
-    <ClCompile Include="EngineTest.cpp" />
+    <ClCompile Include="engine_test.cpp" />
     <ClCompile Include="Light.cpp" />
-    <ClCompile Include="LightTest.cpp" />
     <ClCompile Include="List.cpp" />
-    <ClCompile Include="ListTest.cpp" />
     <ClCompile Include="Material.cpp" />
-    <ClCompile Include="MaterialTest.cpp" />
     <ClCompile Include="Mesh.cpp" />
     <ClCompile Include="MeshData.cpp" />
-    <ClCompile Include="MeshDataTest.cpp" />
-    <ClCompile Include="MeshTest.cpp" />
     <ClCompile Include="Node.cpp" />
-    <ClCompile Include="NodeTest.cpp" />
     <ClCompile Include="Object.cpp" />
-    <ClCompile Include="ObjectTest.cpp" />
     <ClCompile Include="OvoParser.cpp" />
     <ClCompile Include="PerspectiveCamera.cpp" />
     <ClCompile Include="PointLight.cpp" />
-    <ClCompile Include="RunTest.cpp" />
+    <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="SpotLight.cpp" />
     <ClCompile Include="Texture.cpp" />
-    <ClCompile Include="TextureTest.cpp" />
+    <ClCompile Include="Vertex.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Camera.h" />
     <ClInclude Include="Common.h" />
     <ClInclude Include="DirectionalLight.h" />
     <ClInclude Include="engine.h" />
+    <ClInclude Include="Lib.h" />
     <ClInclude Include="Light.h" />
     <ClInclude Include="List.h" />
     <ClInclude Include="Material.h" />
@@ -128,8 +121,10 @@
     <ClInclude Include="OvoParser.h" />
     <ClInclude Include="PerspectiveCamera.h" />
     <ClInclude Include="PointLight.h" />
+    <ClInclude Include="Shadow.h" />
     <ClInclude Include="SpotLight.h" />
     <ClInclude Include="Texture.h" />
+    <ClInclude Include="Vertex.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

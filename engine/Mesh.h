@@ -5,6 +5,7 @@
 #include "Node.h"
 #include "MeshData.h"
 #include "Common.h"
+#include "Shadow.h"
 
 /**
  * @class Mesh
@@ -24,11 +25,13 @@ public:
     // Getter
     bool getShadows() const;
     std::shared_ptr<Material> getMaterial() const;
+    const MeshData& getMeshData() const;
 
     // Setter
     void setMaterial(const std::shared_ptr<Material> newMaterial);
     void setShadows(const bool newCastShadows);
     void setMeshData(const MeshData& data);
+    void initializeShadow();
 
     void render(const glm::mat4 viewMatrix) const override;
 
@@ -40,5 +43,7 @@ private:
     MeshData _meshData; ///< Dati della mesh, inclusi vertici e facce.
     std::shared_ptr<Material> _material; ///< Materiale associato alla mesh.
     bool _castShadows; ///< Indica se la mesh deve proiettare ombre.
+    std::shared_ptr<Shadow> _shadow;
+
 };
 
