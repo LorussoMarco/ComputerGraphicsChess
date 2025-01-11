@@ -6,7 +6,7 @@
 
 #include "Camera.h"
 #include "Light.h"
-#include "Engine.h"
+#include "engine.h"
 #include "Node.h"
 #include "Object.h"
 #include "OvoParser.h"
