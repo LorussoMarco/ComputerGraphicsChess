@@ -69,6 +69,7 @@ public:
      * @param viewMatrix La matrice di vista da utilizzare per il rendering.
      */
     void render(const glm::mat4 viewMatrix) const override;
+    const MeshData& getMeshData() const;
 
     /**
      * @brief Modalità per il rendering della mesh solo con colori (senza illuminazione).
