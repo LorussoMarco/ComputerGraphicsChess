@@ -20,7 +20,7 @@ CXX := g++
 CXX_FLAGS := -std=c++20 -O2
 # Adds the directory ../$(ENGINE_DIR) to the list of directories from which the compiler should search for included header files
 CXX_FLAGS += -I../$(ENGINE_DIR)
-LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lglut -lGL -lGLU -lfreeimage -lX11 -lXrandr -lXxf86vm -lpthread -lXi
+LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME) -lglut -lGL -lGLU -lfreeimage
 # Command to create a tar.gz archive
 TAR_GZ := tar zcvf
 
