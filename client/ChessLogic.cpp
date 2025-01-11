@@ -1,7 +1,6 @@
 #include "ChessLogic.h"
 #include <iomanip>
 
-ChessBoard ChessLogic::_chessBoard;
 std::vector<Piece> ChessLogic::_pieces;
 Piece ChessLogic::_selectedPiece;
 bool ChessLogic::_isPieceSelected = false;
@@ -53,7 +52,6 @@ bool ChessLogic::isPieceSelected()
 
 ChessLogic::ChessLogic()
 {
-	this->_chessBoard = ChessBoard();
 	this->_pieces = {};
 }
 
@@ -533,8 +531,6 @@ void ChessLogic::printPieces()
  */
 void ChessLogic::resetLogic()
 {
-	// Resetta la scacchiera
-	_chessBoard = ChessBoard();
 
 	// Cancella i pezzi esistenti
 	_pieces.clear();

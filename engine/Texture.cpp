@@ -65,7 +65,7 @@ Texture::~Texture()
 {
     // Elimina la texture associata all'ID specificato per liberare le risorse in OpenGL.
     glDeleteTextures(1, &this->_textureId);
-    _textureId--;
+
     if (this->_bitmap != nullptr)
         // Scarica l'immagine per liberare la memoria utilizzata da FreeImage.
         FreeImage_Unload((FIBITMAP*)this->_bitmap);
@@ -91,6 +91,11 @@ void LIB_API Texture::render(const glm::mat4 viewMatrix) const
     glEnable(GL_TEXTURE_2D);
 }
 
+/**
+ * @brief Verifica se la texture è stata caricata correttamente.
+ *
+ * @return `true` se la texture è stata caricata con successo, `false` altrimenti.
+ */
 bool Texture::isLoaded() const {
     return (_textureId != 0 && _bitmap != nullptr);
 }

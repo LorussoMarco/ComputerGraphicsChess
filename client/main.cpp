@@ -276,9 +276,6 @@ int main() {
 
         });
 
-    
-
-
     // Crea un nodo di scena e lo imposta
     std::shared_ptr<Node> scene = std::make_shared<Node>();
     scene->setName("RootNode");

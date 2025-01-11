@@ -1,6 +1,5 @@
 #pragma once
 
-#include "ChessBoard.h"
 #include "Direction.h"
 #include "Piece.h"
 
@@ -41,7 +40,6 @@ public:
 
 private:
     static void updateGraphics(Direction direction);
-    static ChessBoard _chessBoard; // Board per giocare
     static Piece _selectedPiece;   // Pezzo selezionato
     static std::vector<Piece> _pieces; // Stato dei pezzi
     static bool _isPieceSelected;

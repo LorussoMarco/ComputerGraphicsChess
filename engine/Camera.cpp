@@ -1,7 +1,18 @@
 #include "Camera.h"
 
-
-// Costruttore
+/**
+ * @brief Costruttore della classe Camera.
+ *
+ * Inizializza una nuova istanza di Camera con valori di default:
+ * - Campo visivo (FOV): 90 gradi
+ * - Piano di clipping vicino: 0.01
+ * - Piano di clipping lontano: 1000.0
+ * - Stato attivo: false
+ * - Dimensioni della finestra: larghezza e altezza impostate a 0
+ * - Priorità: 2
+ *
+ * @param type Tipo della camera.
+ */
 Camera::Camera(const std::string& type)
     : Node{ type }
 {
@@ -13,63 +24,100 @@ Camera::Camera(const std::string& type)
     this->setPriority(2);
 }
 
-// Getter per il campo visivo
+/**
+ * @brief Restituisce il campo visivo (FOV) della camera.
+ * @return Campo visivo (FOV) in gradi.
+ */
 float Camera::getFov() const {
     return this->_fov;
 }
 
-// Getter per il piano di clipping vicino
+/**
+ * @brief Restituisce la distanza del piano di clipping vicino.
+ * @return Piano di clipping vicino.
+ */
 float Camera::getNearClipping() const {
     return this->_nearClipping;
 }
 
-// Getter per il piano di clipping lontano
+/**
+ * @brief Restituisce la distanza del piano di clipping lontano.
+ * @return Piano di clipping lontano.
+ */
 float Camera::getFarClipping() const {
     return this->_farClipping;
 }
 
-// Getter per la larghezza della finestra
+/**
+ * @brief Restituisce la larghezza della finestra.
+ * @return Larghezza della finestra.
+ */
 int Camera::getWindowWidth() const {
     return this->_windowWidth;
 }
 
-// Getter per l'altezza della finestra
+/**
+ * @brief Restituisce l'altezza della finestra.
+ * @return Altezza della finestra.
+ */
 int Camera::getWindowHeight() const {
     return this->_windowHeight;
 }
 
-// Getter per lo stato attivo della camera
+/**
+ * @brief Verifica se la camera è attiva.
+ * @return true se la camera è attiva, false altrimenti.
+ */
 bool Camera::isActive() const {
     return this->_isActive;
 }
 
-// Calcola la matrice inversa della camera
+/**
+ * @brief Calcola la matrice inversa della camera.
+ * @return Matrice inversa della camera.
+ */
 glm::mat4 Camera::getInverseMatrix() {
     return glm::inverse(getLocalMatrix());
 }
 
-// Setter per il piano di clipping vicino
+/**
+ * @brief Imposta la distanza del piano di clipping vicino.
+ * @param newNearClipping Nuova distanza del piano di clipping vicino.
+ */
 void Camera::setNearClipping(const float newNearClipping) {
     this->_nearClipping = newNearClipping;
 }
 
-// Setter per il piano di clipping lontano
+/**
+ * @brief Imposta la distanza del piano di clipping lontano.
+ * @param newFarClipping Nuova distanza del piano di clipping lontano.
+ */
 void Camera::setFarClipping(const float newFarClipping) {
     this->_farClipping = newFarClipping;
 }
 
-// Setter per la dimensione della finestra
+/**
+ * @brief Imposta le dimensioni della finestra.
+ * @param newWidth Nuova larghezza della finestra.
+ * @param newHeight Nuova altezza della finestra.
+ */
 void Camera::setWindowSize(const int newWidth, const int newHeight) {
     this->_windowWidth = newWidth;
     this->_windowHeight = newHeight;
 }
 
-// Setter per il campo visivo
+/**
+ * @brief Imposta il campo visivo (FOV) della camera.
+ * @param newFov Nuovo campo visivo (FOV) in gradi.
+ */
 void Camera::setFov(const float newFov) {
     this->_fov = newFov;
 }
 
-// Setter per lo stato attivo
+/**
+ * @brief Imposta lo stato attivo della camera.
+ * @param newIsActive Nuovo stato attivo della camera.
+ */
 void Camera::setActive(const bool newIsActive) {
     this->_isActive = newIsActive;
 }
