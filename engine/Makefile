@@ -10,14 +10,20 @@ MAIN_SRC_FILES := $(wildcard *.cpp)
 # Set of all object (.o) correspondents to (.cpp) files
 MAIN_OBJ_FILES := $(MAIN_SRC_FILES:.cpp=.o)
 # Name of the executable file for the test runner --> engine-tests-runner
+TESTS_RUNNER := $(BASE_NAME)-tests-runner
+# Set of all test file in the tests directory
+TEST_SRC_FILES := $(wildcard tests/*_test.cpp)
+# Set of all object file (.o) for the test file
+TEST_OBJ_FILES := $(TEST_SRC_FILES:.cpp=.o)
+DEPENDENCIES_DIR := dependencies
 
 # Specifies the C++ compiler to use --> g++
 CXX := g++
-CXX_FLAGS := -c -fPIC -std=c++20 -O2 -I../dependencies/FreeImage/include
+CXX_FLAGS := -c -fPIC -std=c++20 -O2
 # Flag for the linker to create a shared library
 LD_FLAGS := -shared
 # Libraries to link with the project (glut, GL, GLU, freeimage)
-LIBS := -lglut -lGL -lGLU -L../dependencies/FreeImage/lib/x64/Debug -lfreeimage
+LIBS := -lglut -lGL -lGLU -lfreeimage
 
 # Your default target (first in the makefile) run make without specifying a target (ex: make clean)
 install: $(TARGET)
@@ -25,11 +31,18 @@ install: $(TARGET)
 
 # Target for building the shared library
 # check if the test runner and object files are update
-$(TARGET): $(MAIN_OBJ_FILES)
+$(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
 	# builds the shared library
 	$(CXX) $(LD_FLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LIBS)
 	@echo "$(TARGET) build done!"
 
+# Target for building the test runner
+$(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
+	# builds the test executable
+	$(CXX) -o $(TESTS_RUNNER) $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES) $(LIBS)
+	@echo "$(TESTS_RUNNER) build done!"
+	./$(TESTS_RUNNER)  # Execute tests
+	@echo "tests execution done!"
 
 # Generic rule to compile source file (.c++) into object file (.o)
 %.o: %.cpp
@@ -38,6 +51,8 @@ $(TARGET): $(MAIN_OBJ_FILES)
 # Target to clean generated files (.o, executables)
 # Removes test runner, object files and shared library
 clean:
+	@rm -f $(TESTS_RUNNER)
+	@rm -f $(TEST_OBJ_FILES)
 	@rm -f $(TARGET)
 	@rm -f $(MAIN_OBJ_FILES)
 
