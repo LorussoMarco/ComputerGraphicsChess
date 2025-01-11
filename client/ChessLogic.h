@@ -4,7 +4,7 @@
 #include "Direction.h"
 #include "Piece.h"
 
-#include <Engine.h>
+#include <engine.h>
 #include <PerspectiveCamera.h> 
 
 class ChessLogic
