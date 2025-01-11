@@ -65,7 +65,7 @@ Texture::~Texture()
 {
     // Elimina la texture associata all'ID specificato per liberare le risorse in OpenGL.
     glDeleteTextures(1, &this->_textureId);
-
+    _textureId--;
     if (this->_bitmap != nullptr)
         // Scarica l'immagine per liberare la memoria utilizzata da FreeImage.
         FreeImage_Unload((FIBITMAP*)this->_bitmap);

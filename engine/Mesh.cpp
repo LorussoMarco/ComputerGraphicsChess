@@ -21,6 +21,12 @@ Mesh::Mesh()
     this->setShadows(true);
 }
 
+Mesh::~Mesh()
+{
+    _material.reset(); // Rilascia il puntatore condiviso
+    // Altre azioni di pulizia possono essere aggiunte qui.
+}
+
 ///// Getter
 
 /**

@@ -20,7 +20,7 @@ class LIB_API Mesh : public Node
 public:
 
     Mesh();
-
+    virtual ~Mesh();
     // Getter
     bool getShadows() const;
     std::shared_ptr<Material> getMaterial() const;

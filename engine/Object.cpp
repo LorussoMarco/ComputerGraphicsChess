@@ -22,6 +22,11 @@ Object::Object(const std::string type)
     this->_name = stream.str();
 }
 
+Object::~Object() 
+{
+    nextId--;
+}
+
 ///// Getter
 
 /**

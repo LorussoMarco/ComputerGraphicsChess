@@ -21,6 +21,8 @@ public:
     Object() = default;
     Object(const std::string type);
 
+    virtual ~Object();
+
     // getter
     int getId() const;
     std::string getName() const;

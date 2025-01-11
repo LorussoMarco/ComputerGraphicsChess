@@ -17,6 +17,7 @@ class LIB_API Light : public Node
 public:
 
     Light(const std::string& type);
+    virtual ~Light();
 
     // Getter
     int getCurrentLight(const int lightId) const;

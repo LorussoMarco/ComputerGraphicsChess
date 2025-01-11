@@ -30,6 +30,11 @@ Light::Light(const std::string& type)
     Light::nextLightId++;
 }
 
+Light::~Light() 
+{
+    nextLightId--;
+}
+
 // Getter per il numero della luce
 int LIB_API Light::getCurrentLight(const int lightId) const
 {
