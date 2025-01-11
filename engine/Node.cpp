@@ -219,7 +219,10 @@ void LIB_API Node::setPriority(int p) {
  */
 void LIB_API Node::addChild(const std::shared_ptr<Node> newChild)
 {
-    this->children.push_back(newChild);
+    if (newChild) {
+        newChild->parent = shared_from_this(); // Imposta il genitore del figlio
+        this->children.push_back(newChild);
+    }
 }
 
 void LIB_API Node::removeAllChildren()
@@ -244,3 +247,14 @@ void LIB_API Node::render(const glm::mat4 viewMatrix) const
     glLoadMatrixf(glm::value_ptr(viewMatrix));
 }
 
+glm::mat4 Node::getWorldMatrix(const glm::mat4& parentMatrix) const {
+    return parentMatrix * getLocalMatrix();
+}
+
+glm::mat4 Node::getTransform() const {
+    return getLocalMatrix();
+}
+
+std::shared_ptr<Node> Node::getParent() const {
+    return this->parent.lock();
+}

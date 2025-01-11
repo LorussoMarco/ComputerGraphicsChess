@@ -1,6 +1,6 @@
 #include <iostream>
 #include <memory>
-#include <Engine.h>
+#include <engine.h>
 #include <Node.h>
 #include <PerspectiveCamera.h>
 #include <OvoParser.h>
@@ -23,52 +23,56 @@ namespace Constants {
 // Camera reference
 std::shared_ptr<PerspectiveCamera> whiteCamera;
 
-
 std::shared_ptr<PerspectiveCamera> freeCamera;
 
 std::shared_ptr<PerspectiveCamera> currentActiveCamera = whiteCamera;
 
-// Light reference
-std::shared_ptr<PointLight> lightAbove;
 
 // Movement speed
 float cameraSpeed = 5.0f;
-float lightSpeed = 5.0f;
+
+bool isLightEnabled = false;
 
 // Rotation speed
 float cameraRotationSpeed = 5.0f;
 
-
 void textOverlay() 
 {
     std::stringstream text;
-    text << "[left moue click] Select piece\n";
+    text << "---GAME COMMANDS---\n";
+    text << "[left mouse click] Select piece\n";
     text << "[directional arrows] - Move pieces\n";
-    text << "[enter] - Confirm move\n\n";
+    text << "[enter] - Confirm move\n";
     text << "[z] - Undo move\n";
+    text << "[v] - Redo move\n";
     text << "[r] - Reset game\n";
+    text << "\n";
+    text << "---ENVIRONMENT COMMANDS---\n";
+    text << "[l] - Turn on/off light\n";
     text << "[c] - Switch camera\n";
+    text << "Free camera commands:\n";
+    text << "   [w][a][s][d] - Move camera\n";
+    text << "   [q][e][y][x] - Rotate camera\n";
     Engine::setScreenText(text.str());
 }
 
+
+
 void intializeAndSetCameras(std::shared_ptr<Node> scene)
 {
-
     //white camera
-
     whiteCamera = std::make_shared<PerspectiveCamera>();
     whiteCamera->setName("WhiteCamera");
-    whiteCamera->setPosition(glm::vec3(-20.0f, 60.0f, 0.0f)); // Posizione
-    whiteCamera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f));  // Rotazione
+    whiteCamera->setPosition(glm::vec3(-20.0f, 80.0f, 0.0f)); 
+    whiteCamera->setRotation(glm::vec3(-45.0f, -90.0f, 0.0f)); 
     scene->addChild(whiteCamera);
     Engine::setActiveCamera(whiteCamera);
 
-    //freecamera
-
+    //free camera
     freeCamera = std::make_shared<PerspectiveCamera>();
     freeCamera->setName("BlackCamera");
-    freeCamera->setPosition(glm::vec3(55.0f, 200.0f, -55.0f)); // Posizione
-    freeCamera->setRotation(glm::vec3(-40.0f, 130.0f, 0.0f));  // Rotazione
+    freeCamera->setPosition(glm::vec3(30.0f, 85.0f, -35.0f)); 
+    freeCamera->setRotation(glm::vec3(-40.0f, 160.0f, 0.0f));  
     scene->addChild(freeCamera);
     Engine::setActiveCamera(freeCamera);
 
@@ -81,7 +85,6 @@ void resetScene() {
     // Rimuovi tutti i figli della scena (inclusi camera e luce)
     scene->removeAllChildren();
 
-    // Riaggiungi la luce sopra la scena
     // Riaggiungi la camera prospettica
     intializeAndSetCameras(scene);
 
@@ -98,7 +101,45 @@ void resetScene() {
     ChessLogic::resetLogic();
 }
 
+void switchLight()
+{
+    // Trova la spotlight nella scena usando il nome "Spot001"
+    std::shared_ptr<Node> spotlightNode = Engine::findObjectByName("Spot001");
 
+    if (spotlightNode) {
+        // Effettua un cast dinamico a SpotLight
+        std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight>(spotlightNode);
+        std::shared_ptr<Node> lightLamp = Engine::findObjectByName("lightLamp");
+        std::shared_ptr<Mesh> lampMesh = std::dynamic_pointer_cast<Mesh>(lightLamp);
+
+
+        if (spotlight) {
+            // Alterna lo stato della luce
+             // Supponendo che la classe SpotLight abbia un metodo isEnabled
+
+            if (isLightEnabled) {
+                spotlight->setRadius(0);
+                isLightEnabled = false;
+                lampMesh->getMaterial()->setAmbientColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+                lampMesh->getMaterial()->setDiffuseColor(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
+                std::cout << "[Info] Spotlight disattivata." << std::endl;
+            }
+            else {
+                spotlight->setRadius(200);
+                isLightEnabled = true;
+                lampMesh->getMaterial()->setAmbientColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+                lampMesh->getMaterial()->setDiffuseColor(glm::vec4(1.0f, 1.0f, 1.0f, 1.0f));
+                std::cout << "[Info] Spotlight attivata." << std::endl;
+            }
+        }
+        else {
+            std::cerr << "[Error] Oggetto trovato non è una spotlight." << std::endl;
+        }
+    }
+    else {
+        std::cerr << "[Error] Spotlight 'Spot001' non trovata nella scena." << std::endl;
+    }
+}
 
 void nextCamera() {
     // Passa alla prossima camera nell'ordine in loop
@@ -121,8 +162,6 @@ int main() {
     ChessLogic::initialPopulate();
     ChessLogic::init();
     textOverlay();
-    static std::list<std::string> stringList = { "Rooftop", "Floor", "Wall001", "Wall002", "Wall003", "Table", "Tableleg001","Tableleg002" ,"Tableleg003" ,"Tableleg004", "Omni001","ChessBoard.001" };
-
     Engine::setMouseCallback([](int button, int state, int mouseX, int mouseY)
         {
             if (button == Constants::MOUSE_LEFT_BUTTON && state == Constants::MOUSE_DOWN)
@@ -133,18 +172,9 @@ int main() {
                 if (selectedNode != nullptr)
                 {
                     std::string pieceName = selectedNode->getName();
-
-                    // Controlla se il nome è nella lista globale
-                    if (std::find(stringList.begin(), stringList.end(), pieceName) != stringList.end())
+                    if (ChessLogic::isPieceSelected() == false)
                     {
-                        std::cout << "Il pezzo \"" << pieceName << "\" non può essere selezionato poiché è nella lista." << std::endl;
-                    }
-                    else
-                    {
-                        if (ChessLogic::isPieceSelected() == false)
-                        {
-                            ChessLogic::selectPiece(pieceName);
-                        }
+                        ChessLogic::selectPiece(pieceName);
                     }
                 }
                 else
@@ -180,6 +210,16 @@ int main() {
         });
 
     Engine::setKeyboardCallback([](const unsigned char key, const int mouseX, const int mouseY) {
+
+        glm::mat4 globalTransform = Engine::getGlobalTransform(freeCamera);
+        glm::vec3 rotation = freeCamera->getRotation();
+        // Estrai i vettori front, right e up dalla matrice globale
+        glm::vec3 cameraFront = glm::normalize(glm::vec3(globalTransform[2])); // Z
+        glm::vec3 cameraRight = glm::normalize(glm::vec3(globalTransform[0])); // X
+        glm::vec3 cameraUp = glm::normalize(glm::vec3(globalTransform[1]));    // Y
+
+        glm::vec3 cameraPosition = freeCamera->getPosition();
+
         switch (key) {
         case Constants::KEYBOARD_KEY_ENTER:
             ChessLogic::selectPiece("none");
@@ -194,14 +234,51 @@ int main() {
         case 'c':
             nextCamera();
             break;
+        case 'l':
+            switchLight();
+            break;
+        case 'w': // Muove la camera in avanti
+            cameraPosition -= cameraFront * cameraSpeed;
+            break;
+        case 's': // Muove la camera indietro
+            cameraPosition += cameraFront * cameraSpeed;
+            break;
+        case 'a': // Muove la camera a sinistra
+            cameraPosition -= cameraRight * cameraSpeed;
+            break;
+        case 'd': // Muove la camera a destra
+            cameraPosition += cameraRight * cameraSpeed;
+            break;
+        case 'x': // Freccia su
+            rotation.x -= cameraRotationSpeed;
+            if (rotation.x < -89.0f) rotation.x = -89.0f; // Limita il pitch
+            break;
+        case 'y': // Freccia giù
+            rotation.x += cameraRotationSpeed;
+            if (rotation.x > 89.0f) rotation.x = 89.0f; // Limita il pitch
+            break;
+        case 'e': // Freccia sinistra
+            rotation.y -= cameraRotationSpeed;
+            break;
+        case 'q': // Freccia destra
+            rotation.y += cameraRotationSpeed;
+            break;
         }
+
+        freeCamera->setRotation(rotation);
+
+        // Aggiorna la posizione della camera
+        freeCamera->setPosition(cameraPosition);
+
         });
+
+    
+
 
     // Crea un nodo di scena e lo imposta
     std::shared_ptr<Node> scene = std::make_shared<Node>();
     scene->setName("RootNode");
     Engine::setScene(scene);
-
 
     intializeAndSetCameras(scene);
     // Crea una telecamera prospettica e la imposta come attiva
@@ -215,6 +292,10 @@ int main() {
     else {
         std::cerr << "[Error] Unable to load OVO file." << std::endl;
     }
+
+    std::shared_ptr<Node> spotlightNode = Engine::findObjectByName("Spot001");
+    std::shared_ptr<SpotLight> spotlight = std::dynamic_pointer_cast<SpotLight>(spotlightNode);
+    spotlight->setRadius(0);
 
     // Esegui il ciclo principale del motore finché non viene chiuso
     while (Engine::isRunning()) {

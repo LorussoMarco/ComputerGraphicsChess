@@ -1,82 +1,75 @@
-CXX = g++
-AR = ar
-LD = g++
-WINDRES = windres
+# output: rush-hour.tar.gz
 
-INC = -I../engine
-CFLAGS = -Wall -std=c++20 -fexceptions
-RCFLAGS = 
-RESINC = 
-LIBDIR = 
-LIB = -lengine
-LDFLAGS = 
+BASE_NAME := chessGame
+TARGET_DIR := .
+# Name of main executable -> chessGame
+TARGET := $(BASE_NAME)
+# Name of archive file -> chessGame.tar.gz
+TARGET_ARCHIVE := $(BASE_NAME).tar.gz
+MAIN_SRC_FILES := $(wildcard *.cpp)
+# List of .o object files corresponding to source files
+MAIN_OBJ_FILES := $(patsubst %.cpp,%.o,$(MAIN_SRC_FILES))
+# Name of the executable for the test -> rush-hour-tests-runner
+TESTS_RUNNER := $(BASE_NAME)-tests-runner
+TEST_SRC_FILES := $(wildcard *_test.cpp)
+# List of .o object files for test files
+TEST_OBJ_FILES := $(patsubst %.cpp,%.o,$(TEST_SRC_FILES))
+# variables to manage the external shared library (engine)
+ENGINE_BASE_NAME := engine
+ENGINE_DIR := $(ENGINE_BASE_NAME)
+ENGINE_LIB_NAME := $(ENGINE_BASE_NAME)
+ENGINE_LIB_FILENAME := lib$(ENGINE_LIB_NAME).so
 
-INC_DEBUG = $(INC)
-CFLAGS_DEBUG = $(CFLAGS) -g -D_DEBUG
-RESINC_DEBUG = $(RESINC)
-RCFLAGS_DEBUG = $(RCFLAGS)
-LIBDIR_DEBUG = $(LIBDIR) -L../engine/bin/Debug
-LIB_DEBUG = $(LIB)
-LDFLAGS_DEBUG = $(LDFLAGS)
-OBJDIR_DEBUG = obj/Debug
-DEP_DEBUG = 
-OUT_DEBUG = bin/Debug/client
+# C++ compiler to use -> g++
+CXX := g++
+CXX_FLAGS := -std=c++20 -O2
+# Adds the directory ../$(ENGINE_DIR) to the list of directories from which the compiler should search for included header files
+CXX_FLAGS += -I../$(ENGINE_DIR)
+LDFLAGS := -L../$(ENGINE_DIR) -l$(ENGINE_LIB_NAME)
+# Command to create a tar.gz archive
+TAR_GZ := tar zcvf
 
-INC_RELEASE = $(INC)
-CFLAGS_RELEASE = $(CFLAGS) -O2
-RESINC_RELEASE = $(RESINC)
-RCFLAGS_RELEASE = $(RCFLAGS)
-LIBDIR_RELEASE = $(LIBDIR) -L../engine/bin/Release
-LIB_RELEASE = $(LIB)
-LDFLAGS_RELEASE = $(LDFLAGS) -s
-OBJDIR_RELEASE = obj/Release
-DEP_RELEASE = 
-OUT_RELEASE = bin/Release/client
+# OS uses LD_LIBRARY_PATH to determine where to look for shared libraries required by the program
+export LD_LIBRARY_PATH := ../$(ENGINE_DIR):$(LD_LIBRARY_PATH)
 
-OBJ_DEBUG = $(OBJDIR_DEBUG)/main.o
+# package: Creates a tar.gz archive of the main executable
+# default target (first)
+package: $(TARGET_ARCHIVE)
+	@echo "all done!"
 
-OBJ_RELEASE = $(OBJDIR_RELEASE)/main.o
+# If $(TARGET) is update, it creates a tar.gz archive containing the main executable
+$(TARGET_ARCHIVE): $(TARGET)
+	# package your distribution tar gz archive here with the necessary distribution artifacts
+	# For example, include binary, header files, dependencies, etc.
+	$(TAR_GZ) $(TARGET_ARCHIVE) $(TARGET)
+	@echo "$(TARGET) package done!"
 
-all: debug release
+$(TARGET): $(MAIN_OBJ_FILES) $(TESTS_RUNNER)
+	# build your client here
+	$(CXX) $(LDFLAGS) -o $(TARGET) $(MAIN_OBJ_FILES) $(LDFLAGS)
+	@echo "$(TARGET) compile done!"
 
-clean: clean_debug clean_release
+#To do
+$(TESTS_RUNNER): $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES)
+	# build your test runner executable here
+	$(CXX) $(CXX_FLAGS) -o $(TESTS_RUNNER) $(TEST_OBJ_FILES) $(MAIN_OBJ_FILES) $(LDFLAGS)
+	@echo "$(TESTS_RUNNER) build done!"
+	#./$(TESTS_RUNNER)
+	@echo "tests execution done!"
 
-before_debug: 
-	test -d bin/Debug || mkdir -p bin/Debug
-	test -d $(OBJDIR_DEBUG) || mkdir -p $(OBJDIR_DEBUG)
+# Compile .cpp source files into .o object files
+%.o: %.cpp
+	# eg: compile example.cpp and create example.o.
+	$(CXX) $(CXX_FLAGS) -c $< -o $@
 
-after_debug: 
+# Used to remove files generated during the building process
+clean:
+	@rm -f $(TESTS_RUNNER)
+	@rm -f $(TEST_OBJ_FILES)
+	@rm -f $(TARGET)
+	@rm -f $(MAIN_OBJ_FILES)
 
-debug: before_debug out_debug after_debug
+# Declaration that clean and install are not files
+# Always execute commands associated with that target, regardless of whether a file with the same name exists
+.PHONY: clean package
 
-out_debug: before_debug $(OBJ_DEBUG) $(DEP_DEBUG)
-	$(LD) $(LIBDIR_DEBUG) -o $(OUT_DEBUG) $(OBJ_DEBUG)  $(LDFLAGS_DEBUG) $(LIB_DEBUG)
-
-$(OBJDIR_DEBUG)/main.o: main.cpp
-	$(CXX) $(CFLAGS_DEBUG) $(INC_DEBUG) -c main.cpp -o $(OBJDIR_DEBUG)/main.o
-
-clean_debug: 
-	rm -f $(OBJ_DEBUG) $(OUT_DEBUG)
-	rm -rf bin/Debug
-	rm -rf $(OBJDIR_DEBUG)
-
-before_release: 
-	test -d bin/Release || mkdir -p bin/Release
-	test -d $(OBJDIR_RELEASE) || mkdir -p $(OBJDIR_RELEASE)
-
-after_release: 
-
-release: before_release out_release after_release
-
-out_release: before_release $(OBJ_RELEASE) $(DEP_RELEASE)
-	$(LD) $(LIBDIR_RELEASE) -o $(OUT_RELEASE) $(OBJ_RELEASE)  $(LDFLAGS_RELEASE) $(LIB_RELEASE)
-
-$(OBJDIR_RELEASE)/main.o: main.cpp
-	$(CXX) $(CFLAGS_RELEASE) $(INC_RELEASE) -c main.cpp -o $(OBJDIR_RELEASE)/main.o
-
-clean_release: 
-	rm -f $(OBJ_RELEASE) $(OUT_RELEASE)
-	rm -rf bin/Release
-	rm -rf $(OBJDIR_RELEASE)
-
-.PHONY: before_debug after_debug clean_debug before_release after_release clean_release

@@ -11,6 +11,8 @@ std::string ChessLogic::_winner = "None";
 
 static Piece _lastSelectedPiece;
 static glm::vec3 _originalPosition;
+std::shared_ptr<Node> eliminatedPieceNode = nullptr;
+Piece eliminatedPiece = Piece();
 static int oldRow;
 static int oldCol;
 
@@ -39,7 +41,7 @@ void ChessLogic::setMoveInProgress(bool isInProgress)
 	_isMoveInProgress = isInProgress;
 }
 
-bool ChessLogic::isPieceSelected() 
+bool ChessLogic::isPieceSelected()
 {
 	return _isPieceSelected;
 }
@@ -63,7 +65,7 @@ bool ChessLogic::checkAndHandleCollisions()
 	_isPieceSelected = false;
 	for (auto it = _pieces.begin(); it != _pieces.end(); )
 	{
-		
+
 		// Costruisci il nome completo del pezzo corrente nell'iterazione
 		std::string currentColor = it->getColor() ? "White" : "Black";
 		std::string currentFullName = currentColor + it->getName() + "." + std::to_string(it->getId());
@@ -77,7 +79,7 @@ bool ChessLogic::checkAndHandleCollisions()
 			currentFullName != selectedFullName
 			) // Confronta i nomi completi
 		{
-			
+
 			if (it->getColor() == _selectedPiece.getColor())
 			{
 				sameColor = true;
@@ -99,12 +101,14 @@ bool ChessLogic::checkAndHandleCollisions()
 			// Rimuovi il nodo dalla scena se esiste
 			if (pieceNode)
 			{
+
+				eliminatedPieceNode = pieceNode;
 				Engine::removeObject(pieceNode); // Rimuovi il nodo dalla scena
 				_isPieceSelected = false;
-				
+
 				std::cout << "Removed piece from scene: " << currentFullName << std::endl;
 			}
-
+			eliminatedPiece = *it;
 			// Rimuovi il pezzo dal vettore
 			it = _pieces.erase(it); // Rimuove l'elemento e restituisce un iteratore valido
 			_selectedPiece = Piece();
@@ -116,7 +120,7 @@ bool ChessLogic::checkAndHandleCollisions()
 		{
 			++it; // Incrementa l'iteratore solo se non si rimuove nulla
 		}
-		
+
 	}
 	if (sameColor == true) {
 		_isPieceSelected = true;
@@ -136,7 +140,7 @@ bool ChessLogic::checkAndHandleCollisions()
 void ChessLogic::init()
 {
 	Engine::setBlinkingCallback(ChessLogic::updateBlinking);
-	
+
 }
 
 void ChessLogic::selectPiece(const std::string& pieceName)
@@ -209,6 +213,12 @@ void ChessLogic::undoLastMove() {
 	if (_lastSelectedPiece.isNull()) {
 		std::cout << "[Info] Nessuna mossa da annullare." << std::endl;
 		return;
+	}
+	if (eliminatedPieceNode != nullptr)
+	{
+		Engine::getScene()->addChild(eliminatedPieceNode);
+		eliminatedPieceNode = nullptr;
+		_pieces.push_back(eliminatedPiece);
 	}
 
 	// Trova il nodo corrispondente al pezzo selezionato

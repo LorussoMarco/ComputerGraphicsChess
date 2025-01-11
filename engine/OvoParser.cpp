@@ -668,8 +668,7 @@ std::pair<std::shared_ptr<Light>, uint32_t> LIB_API OVOParser::parseLightChunk(c
         light->setBaseMatrix(matrix);
         light->setDiffuseColor(color);
         light->setSpecularColor(color);
-        light->setRadius(radius / 1000.0f); // Arbitrary
-
+        light->setRadius(radius / 250.0f); // Arbitrary
 
         return std::make_pair(light, numberOfChildren);
 
