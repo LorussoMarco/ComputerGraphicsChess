@@ -20,7 +20,7 @@ structure:
     - '[ -d client ] || exit 1'
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "main"
 
 
 engine:
@@ -42,7 +42,7 @@ engine:
       - engine/bin/Debug/libengine.so
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "main"
 
 
 client:
@@ -65,5 +65,5 @@ client:
 
 
   rules:
-    - if: $CI_COMMIT_BRANCH == "dev"
+    - if: $CI_COMMIT_BRANCH == "main"
 
