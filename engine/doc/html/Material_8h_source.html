@@ -78,43 +78,45 @@ $(function() {
 <div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;{</div>
 <div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="keyword">public</span>:</div>
 <div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;    <a class="code" href="classMaterial.html">Material</a>();</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160; </div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;    <span class="comment">// Getter</span></div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160; </div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;    glm::vec3 getEmissionColor() <span class="keyword">const</span>;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160; </div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;    <span class="comment">// Setter</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160; </div>
-<div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    <span class="keywordtype">void</span> setEmissionColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
-<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160; </div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;    <span class="keywordtype">void</span> setAmbientColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160; </div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;    <span class="keywordtype">void</span> setDiffuseColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160; </div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;    <span class="keywordtype">void</span> setSpecularColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160; </div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    <span class="keywordtype">void</span> setShininess(<span class="keyword">const</span> <span class="keywordtype">float</span> newShininess);</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160; </div>
-<div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    <span class="keywordtype">void</span> setAlpha(<span class="keyword">const</span> <span class="keywordtype">float</span> newAlpha);</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;    <span class="keywordtype">void</span> setTexture(<span class="keyword">const</span> std::shared_ptr&lt;Texture&gt; newTexture);</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160; </div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classObject.html#a641d85cb7641c16c0d8ff4cf81798d52">render</a>(<span class="keyword">const</span> glm::mat4 viewMatrix) <span class="keyword">const override</span>;</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160; </div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;<span class="keyword">private</span>:</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;    glm::vec3 _emissionColor; </div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    glm::vec3 _ambientColor; </div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    glm::vec3 _diffuseColor; </div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    glm::vec3 _specularColor; </div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    <span class="keywordtype">float</span> _shininess; </div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">float</span> _alpha; </div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    std::shared_ptr&lt;Texture&gt; _texture; </div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;};</div>
+<div class="line"><a name="l00029"></a><span class="lineno"><a class="line" href="classMaterial.html#a255ba20d0325e6b78ff68ac739df40de">   29</a></span>&#160;    <span class="keyword">virtual</span> <a class="code" href="classMaterial.html#a255ba20d0325e6b78ff68ac739df40de">~Material</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160; </div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;    <span class="comment">// Getter</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160; </div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;    glm::vec3 getEmissionColor() <span class="keyword">const</span>;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160; </div>
+<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;    <span class="comment">// Setter</span></div>
+<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160; </div>
+<div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="keywordtype">void</span> setEmissionColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
+<div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160; </div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;    <span class="keywordtype">void</span> setAmbientColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160; </div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;    <span class="keywordtype">void</span> setDiffuseColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160; </div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;    <span class="keywordtype">void</span> setSpecularColor(<span class="keyword">const</span> glm::vec3 newColor);</div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160; </div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;    <span class="keywordtype">void</span> setShininess(<span class="keyword">const</span> <span class="keywordtype">float</span> newShininess);</div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> setAlpha(<span class="keyword">const</span> <span class="keywordtype">float</span> newAlpha);</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160; </div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;    <span class="keywordtype">void</span> setTexture(<span class="keyword">const</span> std::shared_ptr&lt;Texture&gt; newTexture);</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160; </div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    <span class="keywordtype">void</span> <a class="code" href="classObject.html#a641d85cb7641c16c0d8ff4cf81798d52">render</a>(<span class="keyword">const</span> glm::mat4 viewMatrix) <span class="keyword">const override</span>;</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160; </div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;<span class="keyword">private</span>:</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;    glm::vec3 _emissionColor; </div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;    glm::vec3 _ambientColor; </div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;    glm::vec3 _diffuseColor; </div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;    glm::vec3 _specularColor; </div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;    <span class="keywordtype">float</span> _shininess; </div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;    <span class="keywordtype">float</span> _alpha; </div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;    std::shared_ptr&lt;Texture&gt; _texture; </div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;};</div>
 <div class="ttc" id="aCommon_8h_html"><div class="ttname"><a href="Common_8h.html">Common.h</a></div></div>
 <div class="ttc" id="aCommon_8h_html_a77278c8cc96e39fb27b5d0a347c8fb3d"><div class="ttname"><a href="Common_8h.html#a77278c8cc96e39fb27b5d0a347c8fb3d">LIB_API</a></div><div class="ttdeci">#define LIB_API</div><div class="ttdoc">Definisce la macro LIB_API per gestire l'esportazione/importazione di simboli in DLL.</div><div class="ttdef"><b>Definition:</b> Common.h:15</div></div>
 <div class="ttc" id="aObject_8h_html"><div class="ttname"><a href="Object_8h.html">Object.h</a></div></div>
 <div class="ttc" id="aTexture_8h_html"><div class="ttname"><a href="Texture_8h.html">Texture.h</a></div><div class="ttdoc">Dichiarazione della classe Texture per la gestione delle texture in OpenGL.</div></div>
 <div class="ttc" id="aclassMaterial_html"><div class="ttname"><a href="classMaterial.html">Material</a></div><div class="ttdoc">Rappresenta un materiale che conferisce colore e texture alle mesh.</div><div class="ttdef"><b>Definition:</b> Material.h:20</div></div>
+<div class="ttc" id="aclassMaterial_html_a255ba20d0325e6b78ff68ac739df40de"><div class="ttname"><a href="classMaterial.html#a255ba20d0325e6b78ff68ac739df40de">Material::~Material</a></div><div class="ttdeci">virtual ~Material()=default</div></div>
 <div class="ttc" id="aclassObject_html"><div class="ttname"><a href="classObject.html">Object</a></div><div class="ttdoc">Rappresenta un oggetto di base all'interno del sistema.</div><div class="ttdef"><b>Definition:</b> Object.h:17</div></div>
 <div class="ttc" id="aclassObject_html_a641d85cb7641c16c0d8ff4cf81798d52"><div class="ttname"><a href="classObject.html#a641d85cb7641c16c0d8ff4cf81798d52">Object::render</a></div><div class="ttdeci">virtual void render(const glm::mat4 viewMatrix) const =0</div><div class="ttdoc">Metodo virtuale puro per il rendering.</div></div>
 </div><!-- fragment --></div><!-- contents -->

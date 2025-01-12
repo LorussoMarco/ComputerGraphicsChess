@@ -28,7 +28,7 @@ public:
      *
      * Libera le risorse associate alla mesh, incluso il materiale.
      */
-    virtual ~Mesh();
+    ~Mesh();
 
     // Getter
 

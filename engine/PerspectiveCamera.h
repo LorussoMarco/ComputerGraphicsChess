@@ -30,6 +30,8 @@ public:
      */
     PerspectiveCamera();
 
+    virtual ~PerspectiveCamera() = default;
+
     /**
      * @brief Renderizza la scena utilizzando una proiezione prospettica.
      *

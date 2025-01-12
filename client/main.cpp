@@ -46,6 +46,7 @@ void textOverlay()
     text << "[z] - Undo move\n";
     text << "[v] - Redo move\n";
     text << "[r] - Reset game\n";
+    text << "[esc] - Quit game\n";
     text << "\n";
     text << "---ENVIRONMENT COMMANDS---\n";
     text << "[l] - Turn on/off light\n";
@@ -202,10 +203,6 @@ int main() {
             case Constants::KEYBOARD_KEY_RIGHT:
                 ChessLogic::move(Direction::RIGHT);
                 break;
-
-            case 27: // ESC per uscire
-                Engine::stop();
-                break;
             }
         });
 
@@ -267,6 +264,9 @@ int main() {
         case 'q': // Freccia destra
             rotation.y += cameraRotationSpeed;
             break;
+        case 27: // ESC per uscire
+            Engine::stop();
+            break;
         }
 
         freeCamera->setRotation(rotation);
@@ -276,16 +276,13 @@ int main() {
 
         });
 
-    
-
-
     // Crea un nodo di scena e lo imposta
     std::shared_ptr<Node> scene = std::make_shared<Node>();
     scene->setName("RootNode");
     Engine::setScene(scene);
 
-    intializeAndSetCameras(scene);
     // Crea una telecamera prospettica e la imposta come attiva
+    intializeAndSetCameras(scene);
     
 
     // Carica una scena da file OVO e la imposta

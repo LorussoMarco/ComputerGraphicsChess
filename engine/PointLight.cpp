@@ -15,7 +15,7 @@
 PointLight::PointLight()
     : Light{ "PointLight" }
 {
-    this->setRadius(1.0f);
+    this->setRadius(5.0f);
 }
 
 ///// Setter

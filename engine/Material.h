@@ -26,6 +26,7 @@ public:
      * colore diffuso, colore speculare, lucentezza e trasparenza.
      */
     Material();
+    virtual ~Material() = default;
 
     // Getter
 

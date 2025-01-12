@@ -31,6 +31,8 @@ public:
      */
     PointLight();
 
+    virtual ~PointLight() = default;
+
     /**
      * @brief Imposta il raggio della luce puntiforme.
      *

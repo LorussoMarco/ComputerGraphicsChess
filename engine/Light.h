@@ -28,7 +28,7 @@ public:
      *
      * Rimuove la luce decrementando il contatore globale degli ID delle luci.
      */
-    virtual ~Light();
+    ~Light();
 
     // Getter
 

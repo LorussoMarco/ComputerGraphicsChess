@@ -23,6 +23,7 @@ public:
      * orientata verso l'alto (0.0f, 1.0f, 0.0f).
      */
     DirectionalLight();
+    virtual ~DirectionalLight() = default;
 
     /**
      * @brief Modifica la direzione della luce direzionale.

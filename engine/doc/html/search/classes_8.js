@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['spotlight_183',['SpotLight',['../classSpotLight.html',1,'']]]
+  ['spotlight_190',['SpotLight',['../classSpotLight.html',1,'']]]
 ];

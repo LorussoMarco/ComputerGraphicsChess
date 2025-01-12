@@ -16,6 +16,7 @@ class LIB_API Node : public Object, public std::enable_shared_from_this<Node>
 public:
     Node();
     Node(std::string type);
+    virtual ~Node() = default;
 
 
     // Getter

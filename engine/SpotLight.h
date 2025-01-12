@@ -32,6 +32,8 @@ public:
      */
     SpotLight();
 
+    virtual ~SpotLight() = default;
+
     /**
      * @brief Imposta l'angolo di cutoff per questa `SpotLight`.
      *

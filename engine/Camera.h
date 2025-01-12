@@ -22,6 +22,7 @@ public:
      * @param type Il tipo di camera, passato alla classe base `Node`.
      */
     Camera(const std::string& type);
+    virtual ~Camera() = default;
 
     // Getter
     /**
