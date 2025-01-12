@@ -127,5 +127,79 @@ void LIB_API Mesh::render(const glm::mat4 viewMatrix) const
 
             glEnd();
         }
+        if (getName().find("Pawn") != std::string::npos)
+        {
+            // Trasforma la mesh per appiattirla rispetto all'asse Y.
+            glScalef(1.0f, 0.01f, 1.0f); // Schiaccia lungo l'asse Y.
+
+            // Trasla la mesh verso il piano e leggermente in diagonale rispetto agli assi X e Z.
+            glTranslatef(0.02f, -4.5f, -0.02f); // Modifica i valori per regolare la posizione dell'ombra.
+        }
+        else if (getName().find("Bishop") != std::string::npos)
+        {
+            glScalef(1.0f, 0.01f, 1.0f); // Schiaccia lungo l'asse Y.
+
+            // Trasla la mesh verso il piano e leggermente in diagonale rispetto agli assi X e Z.
+            glTranslatef(0.02f, -6.7f, -0.02f); // Modifica i valori per regolare la posizione dell'ombra.
+        }
+        else if (getName().find("King") != std::string::npos)
+        {
+            glScalef(1.0f, 0.01f, 1.0f); // Schiaccia lungo l'asse Y.
+
+            // Trasla la mesh verso il piano e leggermente in diagonale rispetto agli assi X e Z.
+            glTranslatef(0.02f, -9.7f, -0.02f); // Modifica i valori per regolare la posizione dell'ombra.
+        }
+        else if (getName().find("Queen") != std::string::npos)
+        {
+            glScalef(1.0f, 0.01f, 1.0f); // Schiaccia lungo l'asse Y.
+
+            // Trasla la mesh verso il piano e leggermente in diagonale rispetto agli assi X e Z.
+            glTranslatef(0.02f, -8.7f, -0.02f); // Modifica i valori per regolare la posizione dell'ombra.
+        }
+        else if (getName().find("Rook") != std::string::npos)
+        {
+            glScalef(1.0f, 0.01f, 1.0f); // Schiaccia lungo l'asse Y.
+
+            // Trasla la mesh verso il piano e leggermente in diagonale rispetto agli assi X e Z.
+            glTranslatef(0.02f, -7.7f, -0.02f); // Modifica i valori per regolare la posizione dell'ombra.
+        }
+        else if (getName().find("Knight") != std::string::npos)
+        {
+            glScalef(1.0f, 0.01f, 1.0f); // Schiaccia lungo l'asse Y.
+
+            // Trasla la mesh verso il piano e leggermente in diagonale rispetto agli assi X e Z.
+            glTranslatef(0.02f, -4.7f, -0.02f); // Modifica i valori per regolare la posizione dell'ombra.
+        }
+        // Duplica la mesh per creare l'effetto ombra.
+        glPushMatrix();
+
+        glColor4f(0.0f, 0.0f, 0.0f, 1.0f);
+        // Imposta il colore nero per l'ombra.
+
+        glDisable(GL_LIGHTING);
+
+        // Renderizza la mesh come ombra.
+        for (const auto& face : _meshData.getFaces())
+        {
+            glBegin(GL_TRIANGLES);
+
+            const glm::vec3 vertex_0 = _meshData.getVertices()[std::get<0>(face)];
+            const glm::vec3 vertex_1 = _meshData.getVertices()[std::get<1>(face)];
+            const glm::vec3 vertex_2 = _meshData.getVertices()[std::get<2>(face)];
+
+            glVertex3f(vertex_0.x, vertex_0.y, vertex_0.z);
+            glVertex3f(vertex_1.x, vertex_1.y, vertex_1.z);
+            glVertex3f(vertex_2.x, vertex_2.y, vertex_2.z);
+
+            glEnd();
+        }
+
+        // Ripristina lo stato grafico.
+        glEnable(GL_LIGHTING); // Riabilita l'illuminazione dopo aver renderizzato l'ombra.
+
+        glPopMatrix();
+
+
+
     }
 }
