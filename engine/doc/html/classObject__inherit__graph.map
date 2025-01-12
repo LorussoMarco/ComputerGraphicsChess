@@ -1,0 +1,14 @@
+<map id="Object" name="Object">
+<area shape="rect" id="node1" title="Rappresenta un oggetto di base all&#39;interno del sistema." alt="" coords="229,5,293,32"/>
+<area shape="rect" id="node2" href="$classList.html" title="Gestisce una lista di nodi e le loro matrici di trasformazione per il rendering." alt="" coords="108,80,153,107"/>
+<area shape="rect" id="node3" href="$classMaterial.html" title="Rappresenta un materiale che conferisce colore e texture alle mesh." alt="" coords="178,80,254,107"/>
+<area shape="rect" id="node4" href="$classNode.html" title="Rappresenta un nodo nella gerarchia di una scena 3D." alt="" coords="279,80,335,107"/>
+<area shape="rect" id="node12" href="$classTexture.html" title="Rappresenta una texture che consente di applicare immagini su un modello 3D." alt="" coords="359,80,430,107"/>
+<area shape="rect" id="node5" href="$classCamera.html" title="Classe base per rappresentare camere nella scena." alt="" coords="146,155,219,181"/>
+<area shape="rect" id="node7" href="$classLight.html" title="Funge da base per l&#39;implementazione delle luci nella scena." alt="" coords="279,155,334,181"/>
+<area shape="rect" id="node11" href="$classMesh.html" title="Rappresenta una mesh che viene renderizzata all&#39;interno di una scena." alt="" coords="358,155,415,181"/>
+<area shape="rect" id="node6" href="$classPerspectiveCamera.html" title="Rappresenta una telecamera con proiezione prospettica." alt="" coords="5,229,155,256"/>
+<area shape="rect" id="node8" href="$classDirectionalLight.html" title="Rappresenta una luce direzionale." alt="" coords="179,229,304,256"/>
+<area shape="rect" id="node9" href="$classPointLight.html" title="Rappresenta una luce puntiforme." alt="" coords="329,229,415,256"/>
+<area shape="rect" id="node10" href="$classSpotLight.html" title="Rappresenta una luce spot in una scena 3D." alt="" coords="440,229,523,256"/>
+</map>

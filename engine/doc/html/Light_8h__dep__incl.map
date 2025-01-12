@@ -1,0 +1,13 @@
+<map id="Light.h" name="Light.h">
+<area shape="rect" id="node1" title=" " alt="" coords="259,5,325,32"/>
+<area shape="rect" id="node2" href="$DirectionalLight_8h.html" title=" " alt="" coords="74,80,211,107"/>
+<area shape="rect" id="node4" href="$OvoParser_8h.html" title=" " alt="" coords="221,155,320,181"/>
+<area shape="rect" id="node5" href="$engine__test_8cpp.html" title=" " alt="" coords="5,229,131,256"/>
+<area shape="rect" id="node7" href="$Light_8cpp.html" title=" " alt="" coords="529,80,610,107"/>
+<area shape="rect" id="node8" href="$PointLight_8h.html" title="Dichiarazione della classe PointLight." alt="" coords="287,80,385,107"/>
+<area shape="rect" id="node10" href="$SpotLight_8h.html" title="Dichiarazione della classe SpotLight per rappresentare una luce spot." alt="" coords="410,80,505,107"/>
+<area shape="rect" id="node3" href="$DirectionalLight_8cpp.html" title=" " alt="" coords="45,155,197,181"/>
+<area shape="rect" id="node6" href="$OvoParser_8cpp.html" title=" " alt="" coords="213,229,328,256"/>
+<area shape="rect" id="node9" href="$PointLight_8cpp.html" title=" " alt="" coords="344,155,459,181"/>
+<area shape="rect" id="node11" href="$SpotLight_8cpp.html" title=" " alt="" coords="483,155,594,181"/>
+</map>

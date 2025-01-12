@@ -1,0 +1,13 @@
+<map id="Texture.h" name="Texture.h">
+<area shape="rect" id="node1" title="Dichiarazione della classe Texture per la gestione delle texture in OpenGL." alt="" coords="303,5,385,32"/>
+<area shape="rect" id="node2" href="$Material_8h.html" title=" " alt="" coords="177,80,265,107"/>
+<area shape="rect" id="node9" href="$OvoParser_8h.html" title=" " alt="" coords="265,229,364,256"/>
+<area shape="rect" id="node11" href="$Texture_8cpp.html" title=" " alt="" coords="382,80,479,107"/>
+<area shape="rect" id="node3" href="$engine_8h.html" title=" " alt="" coords="41,229,119,256"/>
+<area shape="rect" id="node6" href="$Material_8cpp.html" title=" " alt="" coords="59,155,162,181"/>
+<area shape="rect" id="node7" href="$Mesh_8h.html" title=" " alt="" coords="187,155,256,181"/>
+<area shape="rect" id="node4" href="$engine_8cpp.html" title=" " alt="" coords="5,304,99,331"/>
+<area shape="rect" id="node5" href="$engine__test_8cpp.html" title=" " alt="" coords="123,304,248,331"/>
+<area shape="rect" id="node8" href="$Mesh_8cpp.html" title=" " alt="" coords="157,229,241,256"/>
+<area shape="rect" id="node10" href="$OvoParser_8cpp.html" title=" " alt="" coords="272,304,387,331"/>
+</map>

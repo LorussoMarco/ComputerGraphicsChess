@@ -22,7 +22,7 @@ Object::Object(const std::string type)
 }
 
 /**
- * @brief Distruttore della classe `Light`.
+ * @brief Distruttore della classe `Object`.
  */
 Object::~Object()
 {

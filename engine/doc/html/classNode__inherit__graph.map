@@ -1,0 +1,12 @@
+<map id="Node" name="Node">
+<area shape="rect" id="node1" title="Rappresenta un nodo nella gerarchia di una scena 3D." alt="" coords="279,95,335,121"/>
+<area shape="rect" id="node4" href="$classCamera.html" title="Classe base per rappresentare camere nella scena." alt="" coords="146,169,219,196"/>
+<area shape="rect" id="node6" href="$classLight.html" title="Funge da base per l&#39;implementazione delle luci nella scena." alt="" coords="279,169,334,196"/>
+<area shape="rect" id="node10" href="$classMesh.html" title="Rappresenta una mesh che viene renderizzata all&#39;interno di una scena." alt="" coords="358,169,415,196"/>
+<area shape="rect" id="node2" href="$classObject.html" title="Rappresenta un oggetto di base all&#39;interno del sistema." alt="" coords="208,13,272,39"/>
+<area shape="rect" id="node3" title=" " alt="" coords="296,5,451,47"/>
+<area shape="rect" id="node5" href="$classPerspectiveCamera.html" title="Rappresenta una telecamera con proiezione prospettica." alt="" coords="5,244,155,271"/>
+<area shape="rect" id="node7" href="$classDirectionalLight.html" title="Rappresenta una luce direzionale." alt="" coords="179,244,304,271"/>
+<area shape="rect" id="node8" href="$classPointLight.html" title="Rappresenta una luce puntiforme." alt="" coords="329,244,415,271"/>
+<area shape="rect" id="node9" href="$classSpotLight.html" title="Rappresenta una luce spot in una scena 3D." alt="" coords="440,244,523,271"/>
+</map>
