@@ -1,93 +1,132 @@
-# cg
+# Computer Graphics Chess
 
+A 3D Chess Game with Custom Engine and Client
 
+---
 
-## Getting started
+## Project Overview
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+**Computer Graphics Chess** is a fully hand-crafted 3D chess game developed in C++ with a custom-built graphics engine and client. The project demonstrates advanced computer graphics techniques, scene management, and interactive gameplay, all rendered in real time. The chessboard and pieces are visualized in a 3D environment, with a scene imported from an external OVO file and multiple camera perspectives.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+---
 
-## Add your files
+## Features
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+- **Custom Graphics Engine**: Built from scratch, supporting scene graphs, mesh rendering, materials, lights, and cameras.
+- **Interactive Chess Gameplay**: Full chess logic, including piece selection, movement, turn management, undo/redo, and win detection.
+- **Scene Import**: Loads a 3D scene from an OVO file, including board, pieces, and environment.
+- **Multiple Cameras**: Switch between fixed and free camera views for immersive gameplay.
+- **Dynamic Lighting**: Toggle spotlights and interact with scene lighting in real time.
+- **Keyboard and Mouse Controls**: Intuitive controls for both chess moves and camera navigation.
 
-```
-cd existing_repo
-git remote add origin https://gitlab-edu.supsi.ch/dti-isin/labingsw/labingsw02/20242025/group04/cg.git
-git branch -M main
-git push -uf origin main
-```
+---
 
-## Integrate with your tools
+## Architecture Overview
 
-- [ ] [Set up project integrations](https://gitlab-edu.supsi.ch/dti-isin/labingsw/labingsw02/20242025/group04/cg/-/settings/integrations)
+### Engine
+- The `engine/` directory contains the core graphics engine, responsible for rendering, scene management, camera handling, and object manipulation.
+- The engine exposes a C++ API for initializing the window, setting callbacks, managing the scene graph, and rendering.
 
-## Collaborate with your team
+### Client
+- The `client/` directory contains the chess game logic and user interface.
+- Handles user input, chess rules, piece movement, and communicates with the engine for rendering and scene updates.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+### Scene Import (OVO)
+- The scene is described in an external `.ovo` file (`scena1.ovo`), which is parsed at runtime using the custom `OVOParser`.
+- The parser reconstructs the scene graph, including nodes, meshes, materials, and lights, and integrates it into the engine.
 
-## Test and Deploy
+### Camera System
+- Two main cameras are set up: a "White" camera and a "Black" (free) camera, both using perspective projection.
+- Users can switch between cameras and control the free camera with WASD and rotation keys.
 
-Use the built-in continuous integration in GitLab.
+### Chess Logic
+- The chess rules are implemented in the `ChessLogic` class, which manages piece states, turn order, move validation, undo/redo, and win conditions.
+- Each piece is represented by the `Piece` class, tracking its type, color, and position.
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
-
-***
-
-# Editing this README
-
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
-
-## Suggestions for a good README
-
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+---
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+
+### Prerequisites
+- **C++20** compatible compiler (tested with GCC and MSVC)
+- **OpenGL** development libraries
+- **FreeGLUT** and **FreeImage** libraries (provided in `dependencies/`)
+- **CMake** or **Make** (for Linux)
+- **Visual Studio 2022+** (for Windows, optional)
+
+### Building on Linux
+1. Install required system packages:
+   ```sh
+   sudo apt-get install build-essential libgl1-mesa-dev libglu1-mesa-dev freeglut3-dev libfreeimage-dev
+   ```
+2. From the project root, build the engine and client:
+   ```sh
+   make
+   ```
+   This will compile both the engine and client. Binaries will be placed in `engine/bin/` and `client/`.
+
+### Building on Windows
+- Open `baseline.sln` in Visual Studio 2022 or later.
+- Build the solution (both `engine` and `client` projects will be built).
+- Ensure the required DLLs (e.g., `engine.dll`, `FreeImage.dll`, `freeglut.dll`) are available in the executable directory or in your system PATH.
+
+---
 
 ## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Running the Game
+- On Linux:
+  ```sh
+  cd client
+  ./chessGame
+  ```
+- On Windows:
+  - Run `client.exe` from the `demo/Windows/` directory or from your build output.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+### Controls
+
+**Game Controls:**
+- **Left Mouse Click**: Select a chess piece
+- **Arrow Keys**: Move selected piece
+- **Enter**: Confirm move
+- **Z**: Undo last move
+- **V**: Redo last move
+- **R**: Reset game
+- **ESC**: Quit game
+
+**Environment Controls:**
+- **L**: Toggle spotlight
+- **C**: Switch camera
+
+**Free Camera Controls:**
+- **W/A/S/D**: Move camera
+- **Q/E/Y/X**: Rotate camera
+
+---
+
+## Project Structure
+
+```
+ComputerGraphicsChess/
+  engine/         # Custom graphics engine (core rendering, scene, camera, etc.)
+  client/         # Chess game logic, main application, and assets
+  dependencies/   # Third-party libraries (FreeGLUT, FreeImage, GLM)
+  demo/           # Pre-built binaries and assets for Windows/Linux
+  Makefile        # Top-level build script
+  README.md       # Project documentation
+```
+
+---
 
 ## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Contributions are welcome! Please open issues or pull requests for bug fixes, improvements, or new features. For major changes, please discuss them via issue first.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+---
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+## Author
 
-## License
-For open source projects, say how it is licensed.
+- Marco Lorusso
+- SUPSI - Bachelor of Science in Computer Science
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+---
